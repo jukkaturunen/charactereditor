@@ -371,6 +371,15 @@
     render();
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function formatSkillName(name) {
+    const withSpaces = name.replace(/_/g, ' ');
+    return capitalizeFirstLetter(withSpaces);
+  }
+
   function populateSheet(data) {
     const character = data.character;
 
@@ -389,17 +398,17 @@
     const mentalAttributes = document.getElementById('mental-attributes');
     mentalAttributes.innerHTML = '<h3>Mental</h3>';
     for (const attr in character.attributes.mental) {
-      mentalAttributes.innerHTML += `<div class="item"><span>${attr}</span>${renderDots('attributes', 'mental', attr, character.attributes.mental[attr])}</div>`;
+      mentalAttributes.innerHTML += `<div class="item"><span>${capitalizeFirstLetter(attr)}</span>${renderDots('attributes', 'mental', attr, character.attributes.mental[attr])}</div>`;
     }
     const physicalAttributes = document.getElementById('physical-attributes');
     physicalAttributes.innerHTML = '<h3>Physical</h3>';
     for (const attr in character.attributes.physical) {
-      physicalAttributes.innerHTML += `<div class="item"><span>${attr}</span>${renderDots('attributes', 'physical', attr, character.attributes.physical[attr])}</div>`;
+      physicalAttributes.innerHTML += `<div class="item"><span>${capitalizeFirstLetter(attr)}</span>${renderDots('attributes', 'physical', attr, character.attributes.physical[attr])}</div>`;
     }
     const socialAttributes = document.getElementById('social-attributes');
     socialAttributes.innerHTML = '<h3>Social</h3>';
     for (const attr in character.attributes.social) {
-      socialAttributes.innerHTML += `<div class="item"><span>${attr}</span>${renderDots('attributes', 'social', attr, character.attributes.social[attr])}</div>`;
+      socialAttributes.innerHTML += `<div class="item"><span>${capitalizeFirstLetter(attr)}</span>${renderDots('attributes', 'social', attr, character.attributes.social[attr])}</div>`;
     }
 
     // Skills
@@ -407,19 +416,19 @@
     mentalSkills.innerHTML = '<h3>Mental</h3>';
     for (const skill in character.skills.mental) {
       const hasSpecialty = character.specialties.hasOwnProperty(skill);
-      mentalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${skill}</span>${renderDots('skills', 'mental', skill, character.skills.mental[skill])}</div>`;
+      mentalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'mental', skill, character.skills.mental[skill])}</div>`;
     }
     const physicalSkills = document.getElementById('physical-skills');
     physicalSkills.innerHTML = '<h3>Physical</h3>';
     for (const skill in character.skills.physical) {
       const hasSpecialty = character.specialties.hasOwnProperty(skill);
-      physicalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${skill}</span>${renderDots('skills', 'physical', skill, character.skills.physical[skill])}</div>`;
+      physicalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'physical', skill, character.skills.physical[skill])}</div>`;
     }
     const socialSkills = document.getElementById('social-skills');
     socialSkills.innerHTML = '<h3>Social</h3>';
     for (const skill in character.skills.social) {
       const hasSpecialty = character.specialties.hasOwnProperty(skill);
-      socialSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${skill}</span>${renderDots('skills', 'social', skill, character.skills.social[skill])}</div>`;
+      socialSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'social', skill, character.skills.social[skill])}</div>`;
     }
 
     // Other Traits
