@@ -24,7 +24,7 @@
     display: grid;
     grid-template-columns: 100px 1fr;
   }
-  .attributes, .skills {
+  .attributes, .skills, .other-traits {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
@@ -46,6 +46,7 @@
   }
   .dots {
     display: flex;
+    margin-bottom: 5px;
   }
   .dot {
     width: 15px;
@@ -67,6 +68,20 @@
     cursor: pointer;
   }
   .specialty-box.filled {
+    background-color: black;
+  }
+  .boxes {
+    display: flex;
+    margin-bottom: 5px;
+  }
+  .box {
+    width: 15px;
+    height: 15px;
+    border: 1px solid black;
+    margin-right: 3px;
+    cursor: pointer;
+  }
+  .box.filled {
     background-color: black;
   }
 </style>
@@ -99,6 +114,13 @@
     <div class="category" id="mental-skills"><h3>Mental</h3></div>
     <div class="category" id="physical-skills"><h3>Physical</h3></div>
     <div class="category" id="social-skills"><h3>Social</h3></div>
+  </div>
+
+  <h2>Other Traits</h2>
+  <div class="other-traits">
+    <div class="category" id="health"></div>
+    <div class="category" id="willpower"></div>
+    <div class="category" id="integrity"></div>
   </div>
 </div>
 
@@ -272,8 +294,24 @@
     return dotsHtml;
   }
 
+  function renderBoxes(category, name, value, maxBoxes = 10) {
+    let boxesHtml = '<div class="boxes">';
+    for (let i = 0; i < maxBoxes; i++) {
+      const newValue = (i + 1 === value) ? 0 : i + 1;
+      boxesHtml += `<div class="box ${i < value ? 'filled' : ''}" onclick="updateValue('${category}', '', '${name}', ${newValue})"></div>`;
+    }
+    boxesHtml += '</div>';
+    return boxesHtml;
+  }
+
   function updateValue(category, subcategory, name, newValue) {
-    characterData.character[category][subcategory][name] = newValue;
+    if (subcategory) {
+      characterData.character[category][subcategory][name] = newValue;
+    } else if (name) {
+      characterData.character[category][name] = newValue;
+    } else {
+      characterData.character[category] = newValue;
+    }
     render();
   }
 
@@ -336,6 +374,26 @@
       const hasSpecialty = character.specialties.hasOwnProperty(skill);
       socialSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${skill}</span>${renderDots('skills', 'social', skill, character.skills.social[skill])}</div>`;
     }
+
+    // Other Traits
+    const healthEl = document.getElementById('health');
+    healthEl.innerHTML = '<h3>Health</h3>';
+    healthEl.innerHTML += renderDots('health', '', 'max', character.health.max, 10);
+    let emptyBoxes = '<div class="boxes">';
+    for(let i=0; i<10; i++) {
+        emptyBoxes += '<div class="box"></div>';
+    }
+    emptyBoxes += '</div>';
+    healthEl.innerHTML += emptyBoxes;
+
+    const willpowerEl = document.getElementById('willpower');
+    willpowerEl.innerHTML = '<h3>Willpower</h3>';
+    willpowerEl.innerHTML += renderDots('willpower', '', 'max', character.willpower.max, 10);
+    willpowerEl.innerHTML += renderBoxes('willpower', 'current', character.willpower.current, 10);
+
+    const integrityEl = document.getElementById('integrity');
+    integrityEl.innerHTML = '<h3>Integrity</h3>';
+    integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
   }
 
   function render() {
