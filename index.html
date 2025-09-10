@@ -217,9 +217,9 @@
     "health": {
       "max": 7,
       "damage": {
-        "bashing": 0,
-        "lethal": 0,
-        "aggravated": 0
+        "bashing": 1,
+        "lethal": 3,
+        "aggravated": 2
       }
     },
     "willpower": {
@@ -294,6 +294,8 @@
     return dotsHtml;
   }
 
+  let healthDamageState = [];
+
   function renderBoxes(category, name, value, maxBoxes = 10) {
     let boxesHtml = '<div class="boxes">';
     for (let i = 0; i < maxBoxes; i++) {
@@ -302,6 +304,51 @@
     }
     boxesHtml += '</div>';
     return boxesHtml;
+  }
+
+  function renderHealthDamage(damageState) {
+    let boxesHtml = '<div class="boxes">';
+    damageState.forEach((damageType, index) => {
+        boxesHtml += `<div class="box" onclick="updateHealthDamage(${index})">`;
+        switch (damageType) {
+            case 1: // Bashing
+                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
+                break;
+            case 2: // Lethal
+                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
+                break;
+            case 3: // Aggravated
+                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/><line x1="7.5" y1="0" x2="7.5" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="7.5" x2="15" y2="7.5" stroke="black" stroke-width="1"/></svg>';
+                break;
+        }
+        boxesHtml += '</div>';
+    });
+    boxesHtml += '</div>';
+    return boxesHtml;
+  }
+
+  function updateHealthDamage(boxIndex) {
+    const currentDamageType = healthDamageState[boxIndex];
+    const newDamageType = (currentDamageType + 1) % 4;
+    healthDamageState[boxIndex] = newDamageType;
+
+    recalculateDamageCounts();
+  }
+
+  function recalculateDamageCounts() {
+    let bashing = 0;
+    let lethal = 0;
+    let aggravated = 0;
+
+    for (const damageType of healthDamageState) {
+        if (damageType === 1) bashing++;
+        else if (damageType === 2) lethal++;
+        else if (damageType === 3) aggravated++;
+    }
+
+    characterData.character.health.damage = { bashing, lethal, aggravated };
+    console.log(characterData.character);
+    render();
   }
 
   function updateValue(category, subcategory, name, newValue) {
@@ -379,12 +426,14 @@
     const healthEl = document.getElementById('health');
     healthEl.innerHTML = '<h3>Health</h3>';
     healthEl.innerHTML += renderDots('health', '', 'max', character.health.max, 10);
-    let emptyBoxes = '<div class="boxes">';
-    for(let i=0; i<10; i++) {
-        emptyBoxes += '<div class="box"></div>';
+    if (healthDamageState.length === 0) {
+        const damage = character.health.damage;
+        for (let i = 0; i < damage.aggravated; i++) healthDamageState.push(3);
+        for (let i = 0; i < damage.lethal; i++) healthDamageState.push(2);
+        for (let i = 0; i < damage.bashing; i++) healthDamageState.push(1);
+        while (healthDamageState.length < 10) healthDamageState.push(0);
     }
-    emptyBoxes += '</div>';
-    healthEl.innerHTML += emptyBoxes;
+    healthEl.innerHTML += renderHealthDamage(healthDamageState);
 
     const willpowerEl = document.getElementById('willpower');
     willpowerEl.innerHTML = '<h3>Willpower</h3>';
