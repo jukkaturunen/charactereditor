@@ -86,13 +86,24 @@
   .box.filled {
     background-color: black;
   }
+  .collapsed {
+    display: none;
+  }
+  .toggle-btn {
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px;
+  }
 </style>
 </head>
 <body>
 
 <div class="sheet">
-  <h1 id="character-name-header"></h1>
-  <div class="header">
+  <h1>
+    <span id="character-name-header"></span>
+    <span class="toggle-btn" onclick="toggleSection('header-content', this)">▼</span>
+  </h1>
+  <div class="header" id="header-content">
     <div class="header-item"><span>Name:</span> <span id="name"></span></div>
     <div class="header-item"><span>Age:</span> <span id="age"></span></div>
     <div class="header-item"><span>Player:</span> <span id="player"></span></div>
@@ -104,22 +115,22 @@
     <div class="header-item"><span>Group Name:</span> <span id="group_name"></span></div>
   </div>
 
-  <h2>Attributes</h2>
-  <div class="attributes">
+  <h2>Attributes <span class="toggle-btn" onclick="toggleSection('attributes-content', this)">▼</span></h2>
+  <div class="attributes" id="attributes-content">
     <div class="category" id="mental-attributes"><h3>Mental</h3></div>
     <div class="category" id="physical-attributes"><h3>Physical</h3></div>
     <div class="category" id="social-attributes"><h3>Social</h3></div>
   </div>
 
-  <h2>Skills</h2>
-  <div class="skills">
+  <h2>Skills <span class="toggle-btn" onclick="toggleSection('skills-content', this)">▼</span></h2>
+  <div class="skills" id="skills-content">
     <div class="category" id="mental-skills"><h3>Mental</h3></div>
     <div class="category" id="physical-skills"><h3>Physical</h3></div>
     <div class="category" id="social-skills"><h3>Social</h3></div>
   </div>
 
-  <h2>Other Traits</h2>
-  <div class="other-traits">
+  <h2>Other Traits <span class="toggle-btn" onclick="toggleSection('other-traits-content', this)">▼</span></h2>
+  <div class="other-traits" id="other-traits-content">
     <div class="category" id="health"></div>
     <div class="category" id="willpower"></div>
     <div class="category" id="integrity"></div>
@@ -285,6 +296,17 @@
     }
   }
 };
+
+  function toggleSection(sectionId, toggleElement) {
+    const section = document.getElementById(sectionId);
+    section.classList.toggle('collapsed');
+
+    if (section.classList.contains('collapsed')) {
+        toggleElement.innerHTML = '▶';
+    } else {
+        toggleElement.innerHTML = '▼';
+    }
+  }
 
   function renderDots(category, subcategory, name, value, maxDots = 5) {
     let dotsHtml = '<div class="dots">';
