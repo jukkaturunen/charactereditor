@@ -5,7 +5,7 @@
   .sheet {
     background-color: white;
     padding: 20px;
-    margin: 20px;
+    margin: 20px auto;
     border: 1px solid black;
     width: 800px;
   }
