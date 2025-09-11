@@ -20,8 +20,11 @@
 
 <div class="sheet">
   <h1>
-    <span id="character-name-header"></span>
-    <span class="toggle-btn" onclick="toggleSection('header-content', this)">▼</span>
+    <span class="title-and-toggle">
+        <span id="character-name-header"></span>
+        <span class="toggle-btn" onclick="toggleSection('header-content', this)">▼</span>
+    </span>
+    <a href="#" id="save-changes-link" class="hidden" onclick="return saveChanges();">Save changes</a>
   </h1>
   <div class="header" id="header-content">
     <div class="header-item"><span>Name:</span> <span id="name"></span></div>

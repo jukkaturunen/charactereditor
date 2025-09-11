@@ -115,3 +115,23 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+h1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-and-toggle {
+    display: flex;
+    align-items: center;
+}
+
+#save-changes-link {
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.hidden {
+    display: none;
+}

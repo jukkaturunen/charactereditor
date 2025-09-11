@@ -1,3 +1,5 @@
+let character_edited = false;
+
 const characterData = {
   "character": {
     "name": "Pax Fuller",
@@ -157,6 +159,18 @@ const characterData = {
   }
 };
 
+function setEdited() {
+    character_edited = true;
+    document.getElementById('save-changes-link').classList.remove('hidden');
+}
+
+function saveChanges() {
+    alert('character data saved');
+    character_edited = false;
+    document.getElementById('save-changes-link').classList.add('hidden');
+    return false;
+}
+
 function toggleSection(sectionId, toggleElement) {
   const section = document.getElementById(sectionId);
   section.classList.toggle('collapsed');
@@ -212,6 +226,7 @@ function renderHealthDamage(damageState) {
 }
 
 function updateHealthDamage(boxIndex) {
+  setEdited();
   const currentDamageType = healthDamageState[boxIndex];
   const newDamageType = (currentDamageType + 1) % 4;
   healthDamageState[boxIndex] = newDamageType;
@@ -235,6 +250,7 @@ function recalculateDamageCounts() {
 }
 
 function updateValue(category, subcategory, name, newValue) {
+  setEdited();
   if (subcategory) {
     characterData.character[category][subcategory][name] = newValue;
   } else if (name) {
@@ -246,6 +262,7 @@ function updateValue(category, subcategory, name, newValue) {
 }
 
 function toggleSpecialty(skillName) {
+  setEdited();
   if (characterData.character.specialties.hasOwnProperty(skillName)) {
     delete characterData.character.specialties[skillName];
   } else {
@@ -344,24 +361,22 @@ function render() {
 }
 
 render();
-document.addEventListener('DOMContentLoaded', () => {
-    const characterSelector = document.getElementById('character-selector');
-    const loadCharacterBtn = document.getElementById('load-character-btn');
+const characterSelector = document.getElementById('character-selector');
+const loadCharacterBtn = document.getElementById('load-character-btn');
 
-    if (characterSelector && loadCharacterBtn) {
-        characterSelector.addEventListener('change', () => {
-            if (characterSelector.value) {
-                loadCharacterBtn.disabled = false;
-            } else {
-                loadCharacterBtn.disabled = true;
-            }
-        });
+if (characterSelector && loadCharacterBtn) {
+    characterSelector.addEventListener('change', () => {
+        if (characterSelector.value) {
+            loadCharacterBtn.disabled = false;
+        } else {
+            loadCharacterBtn.disabled = true;
+        }
+    });
 
-        loadCharacterBtn.addEventListener('click', () => {
-            const selectedCharacter = characterSelector.value;
-            if (selectedCharacter) {
-                alert(`Loading character: ${selectedCharacter}`);
-            }
-        });
-    }
-});
+    loadCharacterBtn.addEventListener('click', () => {
+        const selectedCharacter = characterSelector.value;
+        if (selectedCharacter) {
+            alert(`Loading character: ${selectedCharacter}`);
+        }
+    });
+}
