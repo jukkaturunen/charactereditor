@@ -19,6 +19,8 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
     margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
   }
   .header-item {
     display: grid;
@@ -89,7 +91,7 @@
 <body>
 
 <div class="sheet">
-  <h1>Character Sheet</h1>
+  <h1 id="character-name-header"></h1>
   <div class="header">
     <div class="header-item"><span>Name:</span> <span id="name"></span></div>
     <div class="header-item"><span>Age:</span> <span id="age"></span></div>
@@ -347,7 +349,6 @@
     }
 
     characterData.character.health.damage = { bashing, lethal, aggravated };
-    console.log(characterData.character);
     render();
   }
 
@@ -382,6 +383,8 @@
 
   function populateSheet(data) {
     const character = data.character;
+
+    document.getElementById('character-name-header').textContent = character.name;
 
     // Header
     document.getElementById('name').textContent = character.name;
