@@ -135,3 +135,9 @@ h1 {
 .hidden {
     display: none;
 }
+
+#merits {
+    grid-column: 1 / -1;
+}
+
+

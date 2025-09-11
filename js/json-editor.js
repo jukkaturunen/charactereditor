@@ -5,19 +5,19 @@ class JSON_Editor extends HTMLElement {
         template.innerHTML = `
             <style>
                 :host(json-editor) {
-                    display: inline-flex;
-                    width: 300px;
-                    height: 150px;
+                    display: flex;
+                    width: 100%;
+                    min-height: 150px;
                     background: #252530;
                     color: #fff;
                     font-family: monospace;
                     padding: 4px;
+                    box-sizing: border-box;
                 }
 
                 div {
                     outline: 0;
                     flex-grow: 1;
-                    overflow: auto;
                 }
 
                *[part=number]        { color: #a9dc76 }
