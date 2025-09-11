@@ -1,4 +1,4 @@
-  body {
+body {
     font-family: sans-serif;
     background-color: #f0f0f0;
   }
@@ -89,3 +89,28 @@
     font-size: 0.8em;
     margin-left: 10px;
   }
+
+#site-header {
+  position: sticky;
+  top: 0;
+  height: 50px;
+  background-color: #262e37;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+.site-header-controls select,
+.site-header-controls button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.site-header-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

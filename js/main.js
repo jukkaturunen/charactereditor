@@ -344,3 +344,24 @@ function render() {
 }
 
 render();
+document.addEventListener('DOMContentLoaded', () => {
+    const characterSelector = document.getElementById('character-selector');
+    const loadCharacterBtn = document.getElementById('load-character-btn');
+
+    if (characterSelector && loadCharacterBtn) {
+        characterSelector.addEventListener('change', () => {
+            if (characterSelector.value) {
+                loadCharacterBtn.disabled = false;
+            } else {
+                loadCharacterBtn.disabled = true;
+            }
+        });
+
+        loadCharacterBtn.addEventListener('click', () => {
+            const selectedCharacter = characterSelector.value;
+            if (selectedCharacter) {
+                alert(`Loading character: ${selectedCharacter}`);
+            }
+        });
+    }
+});
