@@ -165,9 +165,15 @@ function setEdited() {
 }
 
 function saveChanges() {
-    alert('character data saved');
-    character_edited = false;
-    document.getElementById('save-changes-link').classList.add('hidden');
+    const meritsEditor = document.getElementById('merits-editor');
+    if (meritsEditor && meritsEditor.is_valid()) {
+        characterData.character.merits = meritsEditor.json_value;
+        alert('character data saved');
+        character_edited = false;
+        document.getElementById('save-changes-link').classList.add('hidden');
+    } else {
+        alert('Invalid JSON in Merits editor. Please fix it before saving.');
+    }
     return false;
 }
 
@@ -354,6 +360,11 @@ function populateSheet(data) {
   const integrityEl = document.getElementById('integrity');
   integrityEl.innerHTML = '<h3>Integrity</h3>';
   integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
+
+  const meritsEditor = document.getElementById('merits-editor');
+  if (meritsEditor) {
+    meritsEditor.json_value = character.merits;
+  }
 }
 
 function render() {
@@ -377,6 +388,15 @@ if (characterSelector && loadCharacterBtn) {
         const selectedCharacter = characterSelector.value;
         if (selectedCharacter) {
             alert(`Loading character: ${selectedCharacter}`);
+        }
+    });
+}
+
+const meritsEditor = document.getElementById('merits-editor');
+if (meritsEditor) {
+    meritsEditor.addEventListener('keyup', () => {
+        if (meritsEditor.is_valid()) {
+            setEdited();
         }
     });
 }
