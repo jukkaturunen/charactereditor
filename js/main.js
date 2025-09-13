@@ -405,11 +405,6 @@ function populateSheet(data) {
   const integrityEl = document.getElementById('integrity');
   integrityEl.innerHTML = '<h3>Integrity</h3>';
   integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
-
-  const meritsEditor = document.getElementById('merits-editor');
-  if (meritsEditor) {
-    meritsEditor.json_value = character.merits;
-  }
 }
 
 function render() {
@@ -417,31 +412,35 @@ function render() {
 }
 
 render();
-const characterSelector = document.getElementById('character-selector');
-const loadCharacterBtn = document.getElementById('load-character-btn');
 
-if (characterSelector && loadCharacterBtn) {
-    characterSelector.addEventListener('change', () => {
-        if (characterSelector.value) {
-            loadCharacterBtn.disabled = false;
-        } else {
-            loadCharacterBtn.disabled = true;
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const characterSelector = document.getElementById('character-selector');
+    const loadCharacterBtn = document.getElementById('load-character-btn');
 
-    loadCharacterBtn.addEventListener('click', () => {
-        const selectedCharacter = characterSelector.value;
-        if (selectedCharacter) {
-            alert(`Loading character: ${selectedCharacter}`);
-        }
-    });
-}
+    if (characterSelector && loadCharacterBtn) {
+        characterSelector.addEventListener('change', () => {
+            if (characterSelector.value) {
+                loadCharacterBtn.disabled = false;
+            } else {
+                loadCharacterBtn.disabled = true;
+            }
+        });
 
-const meritsEditor = document.getElementById('merits-editor');
-if (meritsEditor) {
-    meritsEditor.addEventListener('keyup', () => {
-        if (meritsEditor.is_valid()) {
-            setEdited();
-        }
-    });
-}
+        loadCharacterBtn.addEventListener('click', () => {
+            const selectedCharacter = characterSelector.value;
+            if (selectedCharacter) {
+                alert(`Loading character: ${selectedCharacter}`);
+            }
+        });
+    }
+
+    const meritsEditor = document.getElementById('merits-editor');
+    if (meritsEditor) {
+        meritsEditor.json_value = characterData.character.merits;
+        meritsEditor.addEventListener('keyup', () => {
+            if (meritsEditor.is_valid()) {
+                setEdited();
+            }
+        });
+    }
+});
