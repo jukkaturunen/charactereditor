@@ -290,13 +290,20 @@ function recalculateDamageCounts() {
 
 function updateValue(category, subcategory, name, newValue) {
   setEdited();
-  if (subcategory) {
-    characterData.character[category][subcategory][name] = newValue;
-  } else if (name) {
-    characterData.character[category][name] = newValue;
+
+  if (category === 'beats' && newValue === 5) {
+    characterData.character.beats = 0;
+    characterData.character.experiences.total += 1;
   } else {
-    characterData.character[category] = newValue;
+    if (subcategory) {
+      characterData.character[category][subcategory][name] = newValue;
+    } else if (name) {
+      characterData.character[category][name] = newValue;
+    } else {
+      characterData.character[category] = newValue;
+    }
   }
+  
   render();
 }
 
@@ -405,6 +412,18 @@ function populateSheet(data) {
   const integrityEl = document.getElementById('integrity');
   integrityEl.innerHTML = '<h3>Integrity</h3>';
   integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
+
+  const statsAndXpEl = document.getElementById('stats-and-xp');
+  statsAndXpEl.innerHTML = `
+    <div class="item"><span>Size:</span> <span id="size" onclick="makeEditable(this, 'size')">${character.size}</span></div>
+    <div class="item"><span>Speed:</span> <span id="speed" onclick="makeEditable(this, 'speed')">${character.speed}</span></div>
+    <div class="item"><span>Defense:</span> <span id="defense" onclick="makeEditable(this, 'defense')">${character.defense}</span></div>
+    <div class="item"><span>Armor:</span> <span id="armor" onclick="makeEditable(this, 'armor')">${character.armor}</span></div>
+    <div class="item"><span>Initiative Mod:</span> <span id="initiative_mod" onclick="makeEditable(this, 'initiative_mod')">${character.initiative_mod}</span></div>
+    <h4 class="xp-subheader">Experience</h4>
+    <div class="item"><span>Beats:</span> ${renderDots('beats', '', '', character.beats, 5)}</div>
+    <div class="item"><span>Total:</span> <span id="total_xp" onclick="makeEditable(this, 'experiences.total')">${character.experiences.total}</span></div>
+  `;
 }
 
 function render() {
