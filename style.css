@@ -2,6 +2,9 @@ body {
     font-family: 'Roboto Condensed', Roboto, Helvetica, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
+    background-image: url('images/bg.png');
+    background-size: 100% auto;
+    background-repeat: no-repeat;
   }
   .sheet {
     background-color: white;
@@ -97,10 +100,14 @@ body {
   height: 50px;
   background-color: #262e37;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   z-index: 1000;
+}
+
+#logo {
+    height: 40px;
 }
 
 .site-header-controls select,
@@ -167,12 +174,10 @@ h2 {
     font-weight: normal;
 }
 
-.header-subheading {
+.header-divider {
     grid-column: 1 / -1;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 1em;
-    color: #75838b;
-    font-weight: bold;
-    margin-top: 15px;
+    width: 50%;
+    margin: 15px auto;
+    border: none;
+    border-top: 1px solid #ccc;
 }

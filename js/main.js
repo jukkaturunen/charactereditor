@@ -335,7 +335,7 @@ function populateSheet(data) {
     <div class="header-item"><span>Chronicle:</span> <span id="chronicle" onclick="makeEditable(this, 'chronicle')">${character.chronicle}</span></div>
     <div class="header-item"><span>Faction:</span> <span id="faction" onclick="makeEditable(this, 'faction')">${character.faction}</span></div>
     <div class="header-item"><span>Group Name:</span> <span id="group_name" onclick="makeEditable(this, 'group_name')">${character.group_name}</span></div>
-    <div class="header-subheading"><span>Description</span></div>
+    <hr class="header-divider">
     <div class="header-item"><span>Date of Birth:</span> <span id="date_of_birth" onclick="makeEditable(this, 'description.date_of_birth')">${character.description.date_of_birth}</span></div>
     <div class="header-item"><span>Hair:</span> <span id="hair" onclick="makeEditable(this, 'description.hair')">${character.description.hair}</span></div>
     <div class="header-item"><span>Eyes:</span> <span id="eyes" onclick="makeEditable(this, 'description.eyes')">${character.description.eyes}</span></div>
