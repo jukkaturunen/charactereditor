@@ -166,3 +166,13 @@ h2 {
 #character-name-header {
     font-weight: normal;
 }
+
+.header-subheading {
+    grid-column: 1 / -1;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1em;
+    color: #75838b;
+    font-weight: bold;
+    margin-top: 15px;
+}

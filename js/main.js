@@ -146,15 +146,15 @@ const characterData = {
     "goals": [],
     "description": {
       "age": "",
-      "date_of_birth": "",
-      "hair": "",
-      "eyes": "",
-      "race": "",
-      "nationality": "",
-      "height": "",
-      "weight": "",
+      "date_of_birth": "07-04-1962",
+      "hair": "Darkd brown. almost black",
+      "eyes": "Grey",
+      "race": "Caucasian",
+      "nationality": "American",
+      "height": "181",
+      "weight": "72",
       "sex": "Male",
-      "distinguishing_characteristics": ""
+      "distinguishing_characteristics": "Always seriuous expression"
     }
   }
 };
@@ -301,6 +301,17 @@ function populateSheet(data) {
   document.getElementById('chronicle').textContent = character.chronicle;
   document.getElementById('faction').textContent = character.faction;
   document.getElementById('group_name').textContent = character.group_name;
+
+  // Description
+  document.getElementById('date_of_birth').textContent = character.description.date_of_birth;
+  document.getElementById('hair').textContent = character.description.hair;
+  document.getElementById('eyes').textContent = character.description.eyes;
+  document.getElementById('race').textContent = character.description.race;
+  document.getElementById('nationality').textContent = character.description.nationality;
+  document.getElementById('height').textContent = character.description.height;
+  document.getElementById('weight').textContent = character.description.weight;
+  document.getElementById('sex').textContent = character.description.sex;
+  document.getElementById('distinguishing_characteristics').textContent = character.description.distinguishing_characteristics;
 
   // Attributes
   const mentalAttributes = document.getElementById('mental-attributes');
