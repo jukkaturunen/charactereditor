@@ -314,15 +314,7 @@ function updateValue(category, subcategory, name, newValue) {
 
 function addListItem(category) {
     if (category === 'specialties') {
-        const skill = prompt('Enter the skill for the new specialty:');
-        if (skill) {
-            const specialty = prompt(`Enter the new specialty for ${skill}:`);
-            if (specialty) {
-                characterData.character.specialties[skill] = specialty;
-                setEdited();
-                render();
-            }
-        }
+        openSpecialtyModal();
     } else {
         const singular = category.slice(0, -1);
         const newValue = prompt(`Enter new ${singular}:`);
@@ -333,6 +325,91 @@ function addListItem(category) {
         }
     }
 }
+
+function openSpecialtyModal() {
+    const modal = document.getElementById('specialty-modal');
+    modal.style.display = 'block';
+    populateSkillSelector();
+}
+
+function closeSpecialtyModal() {
+    const modal = document.getElementById('specialty-modal');
+    modal.style.display = 'none';
+}
+
+function populateSkillSelector() {
+    const select = document.getElementById('skill-select');
+    select.innerHTML = '';
+
+    for (const category in characterData.character.skills) {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = capitalizeFirstLetter(category);
+        for (const skill in characterData.character.skills[category]) {
+            const option = document.createElement('option');
+            option.value = skill;
+            option.textContent = formatSkillName(skill);
+            optgroup.appendChild(option);
+        }
+        select.appendChild(optgroup);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('specialty-modal');
+    const closeButton = modal.querySelector('.close-button');
+    const saveButton = modal.querySelector('#save-specialty-btn');
+    const cancelButton = modal.querySelector('#cancel-specialty-btn');
+
+    closeButton.onclick = closeSpecialtyModal;
+    cancelButton.onclick = closeSpecialtyModal;
+
+    saveButton.onclick = () => {
+        const skill = document.getElementById('skill-select').value;
+        const specialty = document.getElementById('specialty-input').value;
+        if (skill && specialty) {
+            characterData.character.specialties[skill] = specialty;
+            setEdited();
+            render();
+            closeSpecialtyModal();
+        }
+    };
+
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            closeSpecialtyModal();
+        }
+    };
+
+    const characterSelector = document.getElementById('character-selector');
+    const loadCharacterBtn = document.getElementById('load-character-btn');
+
+    if (characterSelector && loadCharacterBtn) {
+        characterSelector.addEventListener('change', () => {
+            if (characterSelector.value) {
+                loadCharacterBtn.disabled = false;
+            } else {
+                loadCharacterBtn.disabled = true;
+            }
+        });
+
+        loadCharacterBtn.addEventListener('click', () => {
+            const selectedCharacter = characterSelector.value;
+            if (selectedCharacter) {
+                alert(`Loading character: ${selectedCharacter}`);
+            }
+        });
+    }
+
+    const meritsEditor = document.getElementById('merits-editor');
+    if (meritsEditor) {
+        meritsEditor.json_value = characterData.character.merits;
+        meritsEditor.addEventListener('keyup', () => {
+            if (meritsEditor.is_valid()) {
+                setEdited();
+            }
+        });
+    }
+});
 
 function deleteListItem(category, key) {
     if (confirm('Are you sure you want to delete this item?')) {
@@ -489,34 +566,3 @@ function render() {
 
 render();
 
-document.addEventListener('DOMContentLoaded', () => {
-    const characterSelector = document.getElementById('character-selector');
-    const loadCharacterBtn = document.getElementById('load-character-btn');
-
-    if (characterSelector && loadCharacterBtn) {
-        characterSelector.addEventListener('change', () => {
-            if (characterSelector.value) {
-                loadCharacterBtn.disabled = false;
-            } else {
-                loadCharacterBtn.disabled = true;
-            }
-        });
-
-        loadCharacterBtn.addEventListener('click', () => {
-            const selectedCharacter = characterSelector.value;
-            if (selectedCharacter) {
-                alert(`Loading character: ${selectedCharacter}`);
-            }
-        });
-    }
-
-    const meritsEditor = document.getElementById('merits-editor');
-    if (meritsEditor) {
-        meritsEditor.json_value = characterData.character.merits;
-        meritsEditor.addEventListener('keyup', () => {
-            if (meritsEditor.is_valid()) {
-                setEdited();
-            }
-        });
-    }
-});
