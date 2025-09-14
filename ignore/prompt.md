@@ -35,3 +35,8 @@ Now we have sections for attributes and skills, let's create third one called "o
 # integrity
 - This is mapped straight from field "integrity"
 
+=== 
+
+Let's add conditions and aspirations subsections under other traits, place them before merits subsection and make them same width as health, willpower and integrity. Data is simple text, make them editable as other text fields in the sheet.
+
+

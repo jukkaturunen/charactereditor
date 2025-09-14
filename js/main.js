@@ -113,8 +113,13 @@ const characterData = {
       "gained from": {},
       "spent on": {"integrity+1":2, "wits+1":4,"occult+1":2,"larceny+1":2}
     },
-    "conditions": [],
-    "aspirations": [],
+    "conditions": [
+      "Confused"
+    ],
+    "aspirations": [
+      "Finding her sister",
+      "Graduating top of the class"
+    ],
     "equipment": [],
     "weapons": {
       "none": {
@@ -307,6 +312,24 @@ function updateValue(category, subcategory, name, newValue) {
   render();
 }
 
+function addListItem(category) {
+    const singular = category.slice(0, -1);
+    const newValue = prompt(`Enter new ${singular}:`);
+    if (newValue) {
+        characterData.character[category].push(newValue);
+        setEdited();
+        render();
+    }
+}
+
+function deleteListItem(category, index) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        characterData.character[category].splice(index, 1);
+        setEdited();
+        render();
+    }
+}
+
 function toggleSpecialty(skillName) {
   setEdited();
   if (characterData.character.specialties.hasOwnProperty(skillName)) {
@@ -424,6 +447,20 @@ function populateSheet(data) {
     <div class="item"><span>Beats:</span> ${renderDots('beats', '', '', character.beats, 5)}</div>
     <div class="item"><span>Total:</span> <span id="total_xp" onclick="makeEditable(this, 'experiences.total')">${character.experiences.total}</span></div>
   `;
+
+  const conditionsEl = document.getElementById('conditions');
+  conditionsEl.innerHTML = '<h3>Conditions</h3>';
+  character.conditions.forEach((condition, index) => {
+    conditionsEl.innerHTML += `<div class="item"><span onclick="makeEditable(this, 'conditions.${index}')">${condition}</span><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('conditions', ${index})"></div>`;
+  });
+  conditionsEl.innerHTML += `<a class="add-link" onclick="addListItem('conditions')">Add new</a>`;
+
+  const aspirationsEl = document.getElementById('aspirations');
+  aspirationsEl.innerHTML = '<h3>Aspirations</h3>';
+  character.aspirations.forEach((aspiration, index) => {
+    aspirationsEl.innerHTML += `<div class="item"><span onclick="makeEditable(this, 'aspirations.${index}')">${aspiration}</span><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('aspirations', ${index})"></div>`;
+  });
+  aspirationsEl.innerHTML += `<a class="add-link" onclick="addListItem('aspirations')">Add new</a>`;
 }
 
 function render() {
