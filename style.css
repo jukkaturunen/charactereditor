@@ -37,7 +37,7 @@ body {
     border: 1px solid #ccc;
     padding: 10px;
   }
-  #specialties-content, #merits {
+  #specialties-content, #merits, #weapons-content {
     width: 100%;
     margin-top: 20px;
   }
@@ -245,4 +245,15 @@ h2 {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.weapons-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.weapons-table th, .weapons-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
 }

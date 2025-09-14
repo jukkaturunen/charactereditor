@@ -122,17 +122,37 @@ const characterData = {
     ],
     "equipment": [],
     "weapons": {
-      "none": {
-        "dmg": 0,
+      "beretta 92": {
+        "dmg": 1,
         "range": {
-          "short": 0,
-          "medium": 0,
-          "long": 0
+          "short": 20,
+          "medium": 40,
+          "long": 80
         },
-        "clip": 0,
+        "clip": 15,
         "init": 0,
-        "str": 0,
-        "size": 0
+        "str": 2,
+        "size": 1
+      },     
+      "Indian bow +1": {
+        "dmg": 2,
+        "range": {
+          "short": 40,
+          "medium": 80,
+          "long": 160
+        },
+        "clip": 1,
+        "init": -3,
+        "str": 2,
+        "size": 3
+      },
+      "baton": {
+        "dmg": 1,
+        "range": "melee",
+        "clip": 0,
+        "init": -1,
+        "str": 2,
+        "size": 2
       }
     },
     "vehicles": {
@@ -174,6 +194,7 @@ function saveChanges() {
     if (meritsEditor && meritsEditor.is_valid()) {
         characterData.character.merits = meritsEditor.json_value;
         alert('character data saved');
+        console.log(characterData.character);
         character_edited = false;
         document.getElementById('save-changes-link').classList.add('hidden');
     } else {
@@ -315,6 +336,28 @@ function updateValue(category, subcategory, name, newValue) {
 function addListItem(category) {
     if (category === 'specialties') {
         openSpecialtyModal();
+    } else if (category === 'weapons') {
+        const name = prompt('Enter weapon name:');
+        if (name) {
+            const dmg = prompt('Enter damage:');
+            const range = prompt('Enter range (e.g., 20/40/80 or melee):');
+            const clip = prompt('Enter clip size:');
+            const init = prompt('Enter initiative modifier:');
+            const str = prompt('Enter strength requirement:');
+            const size = prompt('Enter size:');
+
+            let rangeData;
+            if (range.includes('/')) {
+                const parts = range.split('/');
+                rangeData = { short: parts[0], medium: parts[1], long: parts[2] };
+            } else {
+                rangeData = range;
+            }
+
+            characterData.character.weapons[name] = { dmg, range: rangeData, clip, init, str, size };
+            setEdited();
+            render();
+        }
     } else {
         const singular = category.slice(0, -1);
         const newValue = prompt(`Enter new ${singular}:`);
@@ -323,6 +366,18 @@ function addListItem(category) {
             setEdited();
             render();
         }
+    }
+}
+
+function deleteListItem(category, key) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        if (category === 'specialties' || category === 'weapons') {
+            delete characterData.character[category][key];
+        } else {
+            characterData.character[category].splice(key, 1);
+        }
+        setEdited();
+        render();
     }
 }
 
@@ -411,20 +466,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function deleteListItem(category, key) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        if (category === 'specialties') {
-            delete characterData.character.specialties[key];
-        } else {
-            characterData.character[category].splice(key, 1);
-        }
-        setEdited();
-        render();
-    }
-}
-
-
-
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -442,6 +483,22 @@ function populateSpecialties(specialties) {
         specialtiesEl.innerHTML += `<div class="item"><span>${formatSkillName(skill)}</span><div class="specialty-item-right"><span>${specialty}</span><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('specialties', '${skill}')"></div></div>`;
     }
     specialtiesEl.innerHTML += `<a class="add-link" onclick="addListItem('specialties')">Add new</a>`;
+}
+
+function populateWeapons(weapons) {
+    const weaponsEl = document.getElementById('weapons-content');
+    let tableHtml = '<h3>Weapons</h3><table class="weapons-table"><tr><th>Name</th><th>Dmg</th><th>Range</th><th>Clip</th><th>Init</th><th>Str</th><th>Size</th><th></th></tr>';
+    for (const name in weapons) {
+        const weapon = weapons[name];
+        let range = weapon.range;
+        if (typeof range === 'object') {
+            range = `${range.short}/${range.medium}/${range.long}`;
+        }
+        tableHtml += `<tr><td>${name}</td><td>${weapon.dmg}</td><td>${range}</td><td>${weapon.clip}</td><td>${weapon.init}</td><td>${weapon.str}</td><td>${weapon.size}</td><td><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('weapons', '${name}')"></td></tr>`;
+    }
+    tableHtml += '</table>';
+    weaponsEl.innerHTML = tableHtml;
+    weaponsEl.innerHTML += `<a class="add-link" onclick="addListItem('weapons')">Add new</a>`;
 }
 
 function populateSheet(data) {
@@ -558,6 +615,8 @@ function populateSheet(data) {
     aspirationsEl.innerHTML += `<div class="item"><span onclick="makeEditable(this, 'aspirations.${index}')">${aspiration}</span><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('aspirations', ${index})"></div>`;
   });
   aspirationsEl.innerHTML += `<a class="add-link" onclick="addListItem('aspirations')">Add new</a>`;
+
+  populateWeapons(character.weapons);
 }
 
 function render() {
@@ -565,4 +624,3 @@ function render() {
 }
 
 render();
-
