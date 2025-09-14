@@ -37,26 +37,33 @@
 
   <h2>Attributes <span class="toggle-btn" onclick="toggleSection('attributes-content', this)">▼</span></h2>
   <div class="attributes" id="attributes-content">
-    <div class="category" id="mental-attributes"><h3>Mental</h3></div>
-    <div class="category" id="physical-attributes"><h3>Physical</h3></div>
-    <div class="category" id="social-attributes"><h3>Social</h3></div>
+    <div class="three-column-grid">
+      <div class="category" id="mental-attributes"><h3>Mental</h3></div>
+      <div class="category" id="physical-attributes"><h3>Physical</h3></div>
+      <div class="category" id="social-attributes"><h3>Social</h3></div>
+    </div>
   </div>
 
   <h2>Skills <span class="toggle-btn" onclick="toggleSection('skills-content', this)">▼</span></h2>
   <div class="skills" id="skills-content">
-    <div class="category" id="mental-skills"><h3>Mental</h3></div>
-    <div class="category" id="physical-skills"><h3>Physical</h3></div>
-    <div class="category" id="social-skills"><h3>Social</h3></div>
+    <div class="three-column-grid">
+      <div class="category" id="mental-skills"><h3>Mental</h3></div>
+      <div class="category" id="physical-skills"><h3>Physical</h3></div>
+      <div class="category" id="social-skills"><h3>Social</h3></div>
+    </div>
+    <div class="category" id="specialties-content"><h3>Specialties</h3></div>
   </div>
 
   <h2>Other Traits <span class="toggle-btn" onclick="toggleSection('other-traits-content', this)">▼</span></h2>
   <div class="other-traits" id="other-traits-content">
-    <div class="category" id="health"></div>
-    <div class="category" id="willpower"></div>
-    <div class="category" id="integrity"></div>
-    <div class="category" id="stats-and-xp"></div>
-    <div class="category" id="conditions"></div>
-    <div class="category" id="aspirations"></div>
+    <div class="three-column-grid">
+      <div class="category" id="health"></div>
+      <div class="category" id="willpower"></div>
+      <div class="category" id="integrity"></div>
+      <div class="category" id="stats-and-xp"></div>
+      <div class="category" id="conditions"></div>
+      <div class="category" id="aspirations"></div>
+    </div>
     <div class="category" id="merits">
         <h3>Merits</h3>
         <json-editor id="merits-editor"></json-editor>

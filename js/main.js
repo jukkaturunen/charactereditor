@@ -313,32 +313,40 @@ function updateValue(category, subcategory, name, newValue) {
 }
 
 function addListItem(category) {
-    const singular = category.slice(0, -1);
-    const newValue = prompt(`Enter new ${singular}:`);
-    if (newValue) {
-        characterData.character[category].push(newValue);
-        setEdited();
-        render();
+    if (category === 'specialties') {
+        const skill = prompt('Enter the skill for the new specialty:');
+        if (skill) {
+            const specialty = prompt(`Enter the new specialty for ${skill}:`);
+            if (specialty) {
+                characterData.character.specialties[skill] = specialty;
+                setEdited();
+                render();
+            }
+        }
+    } else {
+        const singular = category.slice(0, -1);
+        const newValue = prompt(`Enter new ${singular}:`);
+        if (newValue) {
+            characterData.character[category].push(newValue);
+            setEdited();
+            render();
+        }
     }
 }
 
-function deleteListItem(category, index) {
+function deleteListItem(category, key) {
     if (confirm('Are you sure you want to delete this item?')) {
-        characterData.character[category].splice(index, 1);
+        if (category === 'specialties') {
+            delete characterData.character.specialties[key];
+        } else {
+            characterData.character[category].splice(key, 1);
+        }
         setEdited();
         render();
     }
 }
 
-function toggleSpecialty(skillName) {
-  setEdited();
-  if (characterData.character.specialties.hasOwnProperty(skillName)) {
-    delete characterData.character.specialties[skillName];
-  } else {
-    characterData.character.specialties[skillName] = "";
-  }
-  render();
-}
+
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -347,6 +355,16 @@ function capitalizeFirstLetter(string) {
 function formatSkillName(name) {
   const withSpaces = name.replace(/_/g, ' ');
   return capitalizeFirstLetter(withSpaces);
+}
+
+function populateSpecialties(specialties) {
+    const specialtiesEl = document.getElementById('specialties-content');
+    specialtiesEl.innerHTML = '<h3>Specialties</h3>';
+    for (const skill in specialties) {
+        const specialty = specialties[skill];
+        specialtiesEl.innerHTML += `<div class="item"><span>${formatSkillName(skill)}</span><div class="specialty-item-right"><span>${specialty}</span><img src="images/trash_can.png" class="delete-icon" onclick="deleteListItem('specialties', '${skill}')"></div></div>`;
+    }
+    specialtiesEl.innerHTML += `<a class="add-link" onclick="addListItem('specialties')">Add new</a>`;
 }
 
 function populateSheet(data) {
@@ -399,20 +417,22 @@ function populateSheet(data) {
   mentalSkills.innerHTML = '<h3>Mental</h3>';
   for (const skill in character.skills.mental) {
     const hasSpecialty = character.specialties.hasOwnProperty(skill);
-    mentalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'mental', skill, character.skills.mental[skill])}</div>`;
+    mentalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'mental', skill, character.skills.mental[skill])}</div>`;
   }
   const physicalSkills = document.getElementById('physical-skills');
   physicalSkills.innerHTML = '<h3>Physical</h3>';
   for (const skill in character.skills.physical) {
     const hasSpecialty = character.specialties.hasOwnProperty(skill);
-    physicalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'physical', skill, character.skills.physical[skill])}</div>`;
+    physicalSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'physical', skill, character.skills.physical[skill])}</div>`;
   }
   const socialSkills = document.getElementById('social-skills');
   socialSkills.innerHTML = '<h3>Social</h3>';
   for (const skill in character.skills.social) {
     const hasSpecialty = character.specialties.hasOwnProperty(skill);
-    socialSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}" onclick="toggleSpecialty('${skill}')"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'social', skill, character.skills.social[skill])}</div>`;
+    socialSkills.innerHTML += `<div class="item"><span><div class="specialty-box ${hasSpecialty ? 'filled' : ''}"></div>${formatSkillName(skill)}</span>${renderDots('skills', 'social', skill, character.skills.social[skill])}</div>`;
   }
+
+  populateSpecialties(character.specialties);
 
   // Other Traits
   const healthEl = document.getElementById('health');
