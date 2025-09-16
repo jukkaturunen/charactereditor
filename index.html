@@ -227,11 +227,16 @@ body {
 .save-changes-link:hover {
   text-decoration: underline;
 }
+.status-up-to-date {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 14px;
+}
 .character-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0;
+  margin: 0px 0px 10px 0px;
 }
 .hidden {
   display: none;
@@ -333,7 +338,10 @@ json-editor *[part=false]         { color: #e69fc2 }
         <span id="character-name-header"></span>
         <span class="toggle-btn" onclick="toggleSection('header-content', this)">▼</span>
     </span>
-    <a href="#" id="save-changes-link" class="save-changes-link hidden" onclick="return saveChanges();">Save changes</a>
+    <span class="character-status">
+        <a href="#" id="save-changes-link" class="save-changes-link hidden" onclick="return saveChanges();">Save changes</a>
+        <span id="status-up-to-date" class="status-up-to-date hidden">Up to date</span>
+    </span>
   </h1>
   <div class="header" id="header-content">
     <!-- This will be populated by main.js -->

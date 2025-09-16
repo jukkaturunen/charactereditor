@@ -6,6 +6,13 @@ let currentCharacterFile = null;
 function setEdited() {
     character_edited = true;
     document.getElementById('save-changes-link').classList.remove('hidden');
+    document.getElementById('status-up-to-date').classList.add('hidden');
+}
+
+function setUpToDate() {
+    character_edited = false;
+    document.getElementById('save-changes-link').classList.add('hidden');
+    document.getElementById('status-up-to-date').classList.remove('hidden');
 }
 
 function saveChanges() {
@@ -18,17 +25,28 @@ function saveChanges() {
     if (meritsEditor && meritsEditor.is_valid()) {
         characterData.character.merits = meritsEditor.json_value;
 
+        // Show saving state
+        const saveLink = document.getElementById('save-changes-link');
+        const originalText = saveLink.textContent;
+        saveLink.innerHTML = '<div class="loading-text">Saving<div class="spinner"></div></div>';
+        saveLink.style.pointerEvents = 'none';
+
         google.script.run
             .withSuccessHandler(function(result) {
+                // Restore save link
+                saveLink.textContent = originalText;
+                saveLink.style.pointerEvents = 'auto';
+
                 if (result.success) {
-                    alert('Character data saved successfully!');
-                    character_edited = false;
-                    document.getElementById('save-changes-link').classList.add('hidden');
+                    setUpToDate();
                 } else {
                     alert('Error saving character: ' + result.error);
                 }
             })
             .withFailureHandler(function(error) {
+                // Restore save link
+                saveLink.textContent = originalText;
+                saveLink.style.pointerEvents = 'auto';
                 alert('Error saving character: ' + error.toString());
             })
             .saveCharacter(currentCharacterFile.id, JSON.stringify(characterData, null, 2));
@@ -307,8 +325,7 @@ function loadCharacter(fileId) {
                 currentCharacterFile = { id: fileId };
 
                 document.getElementById('character-sheet').classList.add('visible');
-                character_edited = false;
-                document.getElementById('save-changes-link').classList.add('hidden');
+                setUpToDate();
 
                 healthDamageState = []; // Reset health damage state
                 render();
@@ -698,10 +715,21 @@ function populateSheet(data) {
 
     populateWeapons(character.weapons);
 
-    // Set up merits editor
+    // Set up merits editor (only update if merits have changed or editor is empty)
     const meritsEditor = document.getElementById('merits-editor');
     if (meritsEditor) {
-        meritsEditor.json_value = character.merits;
+        try {
+            // Only update if the current editor content doesn't match the character merits
+            const currentMerits = meritsEditor.is_valid() ? meritsEditor.json_value : null;
+            const meritsChanged = !currentMerits || JSON.stringify(currentMerits) !== JSON.stringify(character.merits);
+
+            if (meritsChanged) {
+                meritsEditor.json_value = character.merits;
+            }
+        } catch (e) {
+            // If there's any error with the current editor content, update it
+            meritsEditor.json_value = character.merits;
+        }
     }
 }
 
