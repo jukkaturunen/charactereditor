@@ -290,8 +290,18 @@ function loadCharacterList() {
 }
 
 function loadCharacter(fileId) {
+    // Show loading state
+    const loadBtn = document.getElementById('load-character-btn');
+    const originalText = loadBtn.textContent;
+    loadBtn.innerHTML = '<div class="loading-text">Loading<div class="spinner"></div></div>';
+    loadBtn.disabled = true;
+
     google.script.run
         .withSuccessHandler(function(result) {
+            // Hide loading state
+            loadBtn.textContent = originalText;
+            loadBtn.disabled = false;
+
             if (result.success) {
                 characterData = JSON.parse(result.data);
                 currentCharacterFile = { id: fileId };
@@ -307,6 +317,9 @@ function loadCharacter(fileId) {
             }
         })
         .withFailureHandler(function(error) {
+            // Hide loading state
+            loadBtn.textContent = originalText;
+            loadBtn.disabled = false;
             alert('Error loading character: ' + error.toString());
         })
         .loadCharacter(fileId);

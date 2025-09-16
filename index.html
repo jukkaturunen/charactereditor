@@ -31,27 +31,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  background: white;
+  background: #262e37;
   border-bottom: 1px solid #ccc;
 }
 #logo {
-  height: 60px;
+  color: white;
+  font-size: 12px;
+  font-weight: normal;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 1px;
+  padding: 0 15px;
 }
 .site-header-controls {
   display: flex;
   gap: 10px;
   align-items: center;
+  padding: 10px 20px;
 }
 #character-selector {
-  padding: 8px 12px;
-  font-size: 16px;
+  padding: 3px 12px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 #load-character-btn, #new-character-btn {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: 3px 16px;
+  font-size: 14px;
   border: 1px solid #007bff;
   background: #007bff;
   color: white;
@@ -67,6 +73,25 @@ body {
   text-align: center;
   padding: 20px;
   font-size: 18px;
+}
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 15px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.loading-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .header {
   display: grid;
@@ -120,6 +145,9 @@ body {
 .dots, .boxes {
   display: flex;
   gap: 2px;
+}
+.boxes {
+  margin-top: 8px;
 }
 .dot {
   width: 15px;
@@ -192,12 +220,18 @@ body {
 }
 .save-changes-link {
   color: #dc3545;
-  text-decoration: none;
+  text-decoration: underline;
   font-weight: bold;
   font-size: 14px;
 }
 .save-changes-link:hover {
   text-decoration: underline;
+}
+.character-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
 }
 .hidden {
   display: none;
@@ -281,7 +315,7 @@ json-editor *[part=false]         { color: #e69fc2 }
 <body>
 
 <header id="site-header">
-  <img id="logo" src="images/cod.png" alt="Chronicles of Darkness">
+  <div id="logo">Chronicles<br>of<br>Darkness</div>
   <div class="site-header-controls">
     <select id="character-selector">
       <option value="" disabled selected>Loading characters...</option>
@@ -294,7 +328,7 @@ json-editor *[part=false]         { color: #e69fc2 }
 <div class="loading" id="loading">Loading characters from Google Drive...</div>
 
 <div class="sheet" id="character-sheet">
-  <h1>
+  <h1 class="character-header">
     <span class="title-and-toggle">
         <span id="character-name-header"></span>
         <span class="toggle-btn" onclick="toggleSection('header-content', this)">▼</span>
