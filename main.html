@@ -2,6 +2,7 @@
 let character_edited = false;
 let characterData = null;
 let currentCharacterFile = null;
+let conditionsData = {};
 
 function setEdited() {
     character_edited = true;
@@ -189,6 +190,8 @@ function updateValue(category, subcategory, name, newValue) {
 function addListItem(category) {
     if (category === 'specialties') {
         openSpecialtyModal();
+    } else if (category === 'conditions') {
+        openConditionModal();
     } else if (category === 'weapons') {
         const name = prompt('Enter weapon name:');
         if (name) {
@@ -507,6 +510,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Condition modal handlers
+    const conditionModal = document.getElementById('condition-modal');
+    const conditionCloseButton = conditionModal.querySelector('.close-button');
+    const addConditionButton = conditionModal.querySelector('#add-condition-btn');
+    const cancelConditionButton = conditionModal.querySelector('#cancel-condition-btn');
+    const conditionSelect = document.getElementById('condition-select');
+
+    conditionCloseButton.onclick = closeConditionModal;
+    cancelConditionButton.onclick = closeConditionModal;
+    addConditionButton.onclick = addSelectedCondition;
+
+    conditionSelect.addEventListener('change', () => {
+        const selectedCondition = conditionSelect.value;
+        displayConditionInfo(selectedCondition);
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -547,6 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.onclick = (event) => {
         if (event.target == specialtyModal) {
             closeSpecialtyModal();
+        } else if (event.target == conditionModal) {
+            closeConditionModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -702,7 +723,11 @@ function populateSheet(data) {
     const conditionsEl = document.getElementById('conditions');
     conditionsEl.innerHTML = '<h3>Conditions</h3>';
     character.conditions.forEach((condition, index) => {
-        conditionsEl.innerHTML += `<div class="item"><span onclick="makeEditable(this, 'conditions.${index}')">${condition}</span><span class="delete-icon" onclick="deleteListItem('conditions', ${index})">🗑</span></div>`;
+        const tooltipContent = getConditionTooltip(condition);
+        const conditionHtml = tooltipContent ?
+            `<span class="tooltip" onclick="makeEditable(this, 'conditions.${index}')">${condition}<span class="tooltiptext">${tooltipContent}</span></span>` :
+            `<span onclick="makeEditable(this, 'conditions.${index}')">${condition}</span>`;
+        conditionsEl.innerHTML += `<div class="item">${conditionHtml}<span class="delete-icon" onclick="deleteListItem('conditions', ${index})">🗑</span></div>`;
     });
     conditionsEl.innerHTML += `<a class="add-link" onclick="addListItem('conditions')">Add new</a>`;
 

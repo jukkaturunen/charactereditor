@@ -1,0 +1,270 @@
+<script>
+// Chronicles of Darkness Conditions Data
+// Parsed from rules/conditions.md
+
+const CONDITIONS_DATA = {
+    "Amnesia": {
+        "name": "Amnesia",
+        "fullName": "Amnesia (Persistent)",
+        "isPersistent": true,
+        "description": "Your character is missing a portion of her memory. An entire period of her life is just gone. This causes massive difficulties with friends and loved ones.",
+        "skills": "",
+        "resolution": "Something problematic arises, such as a forgotten arrest warrant or old enemy."
+    },
+    "Blind": {
+        "name": "Blind",
+        "fullName": "Blind",
+        "isPersistent": false,
+        "description": "Your character cannot see. Any rolls requiring sight may only use a chance die. If another sense can be reasonably substituted, make the roll at -3 instead. In a combat situation, she suffers the drawbacks of the Blinded Tilt instead.",
+        "skills": "",
+        "resolution": "Limitation or difficulty that heightens immediate danger."
+    },
+    "Bonded": {
+        "name": "Bonded",
+        "fullName": "Bonded",
+        "isPersistent": false,
+        "description": "Your character has established an extensive bond with an animal. She gains +2 on any rolls to influence or persuade the animal. The animal may add your Animal Ken to any rolls to resist coercion or fear when in your character's presence. The animal may add your character's Animal Ken to any one die roll.",
+        "skills": "Animal Ken",
+        "resolution": "The bonded animal dies."
+    },
+    "Broken": {
+        "name": "Broken",
+        "fullName": "Broken (Persistent)",
+        "isPersistent": true,
+        "description": "Whatever you did or saw, something inside you snapped. You can barely muster up the will to do your job anymore, and anything more emotionally intense than a raised voice makes you flinch and back down. Apply a -2 to all Social rolls and rolls involving Resolve, and a -5 to any use of the Intimidation Skill.",
+        "skills": "",
+        "resolution": "You back down from a confrontation or fail a roll due to this Condition. If you regain a dot of Integrity, lose another dot of Integrity, or achieve an exceptional success on a breaking point, you can shed this Condition."
+    },
+    "Connected": {
+        "name": "Connected",
+        "fullName": "Connected",
+        "isPersistent": false,
+        "description": "Your character has made inroads with a specified group. While she has this Condition, she gets a +2 to all rolls relating to that group. Alternately, she can shed this Condition to gain a one-time +3 bonus to influence or otherwise work with the group.",
+        "skills": "Politics, Socialize",
+        "resolution": "Condition shed, bridge burned."
+    },
+    "Crippled": {
+        "name": "Crippled",
+        "fullName": "Crippled (Persistent)",
+        "isPersistent": true,
+        "description": "Your character has limited or no ability to walk. Her Speed trait is effectively 1. She must rely on a wheelchair or other device to travel. A manual wheelchair's Speed is equal to your character's Strength, and requires use of her hands. Electric wheelchairs have a Speed of 3, but allow the character free use of her hands. An injury can cause this Condition temporarily, in which case it is resolved when the injury heals and the character regains mobility.",
+        "skills": "",
+        "resolution": "Danger or severe inhibition due to the disability."
+    },
+    "Deprived": {
+        "name": "Deprived",
+        "fullName": "Deprived",
+        "isPersistent": false,
+        "description": "Your character suffers from an addiction. Because your character is without it, she's unable to focus and contain herself. Remove one die from her Stamina, Resolve, and Composure dice pools. This does not influence derived traits; it simply influences dice pools that use these Attributes. A character suffering from addiction may take this Condition as a Persistent Condition.",
+        "skills": "",
+        "resolution": "Indulge in the deprived Vice, therapy."
+    },
+    "Embarrassing Secret": {
+        "name": "Embarrassing Secret",
+        "fullName": "Embarrassing Secret",
+        "isPersistent": false,
+        "description": "Your character has a secret from his past that could come back to haunt him. If this secret gets out, he could be ostracized or maybe even arrested. If the secret gets out, the Condition becomes the Notoriety Condition.",
+        "skills": "",
+        "resolution": "The secret gets out."
+    },
+    "Fugue": {
+        "name": "Fugue",
+        "fullName": "Fugue (Persistent)",
+        "isPersistent": true,
+        "description": "Something terrible happened, and rather than deal with it or let it break you, your mind shuts it out. You are prone to blackouts and lost time. Whenever circumstances become too similar to the situation that led to you gaining this Condition, the player rolls Resolve + Composure. If you fail the roll, the Storyteller controls your character for the next scene, but your character, left to his own devices, will seek to avoid the conflict and get away from the area.",
+        "skills": "",
+        "resolution": "You suffer the effects of this Condition. If you regain a dot of Integrity, lose another dot of Integrity, or achieve an exceptional success on a breaking point, you can shed this Condition."
+    },
+    "Guilty": {
+        "name": "Guilty",
+        "fullName": "Guilty",
+        "isPersistent": false,
+        "description": "Your character is experiencing deep-seated feelings of guilt and remorse. This Condition is commonly applied after a successful breaking point roll. While the character is under the effects of this Condition, he receives a -2 to any Resolve or Composure rolls to defend against Subterfuge, Empathy, or Intimidation rolls.",
+        "skills": "",
+        "resolution": "The character makes restitution for whatever he did; the character confesses his crimes."
+    },
+    "Informed": {
+        "name": "Informed",
+        "fullName": "Informed",
+        "isPersistent": false,
+        "description": "Your character has a breadth of research information based on the topic she investigated. When you make a roll relating to the topic, you may shed this Condition. If the roll failed, it is instead considered to have a single success. If it succeeded, the roll is considered an exceptional success. The roll that benefits from the Informed Condition can be any relevant Skill roll. Combat rolls cannot benefit from this Condition.",
+        "skills": "Academics, Investigation, Occult, Science",
+        "resolution": "Use the Condition for its benefit."
+    },
+    "Inspired": {
+        "name": "Inspired",
+        "fullName": "Inspired",
+        "isPersistent": false,
+        "description": "Your character is deeply inspired. When your character takes an action pertaining to that inspiration, you may resolve this Condition. Gain a Willpower point, and consider the roll an Exceptional Success on three successes, instead of five.",
+        "skills": "Crafts, Expression",
+        "resolution": "Use the Condition for its benefit."
+    },
+    "Leveraged": {
+        "name": "Leveraged",
+        "fullName": "Leveraged",
+        "isPersistent": false,
+        "description": "Your character has been blackmailed, tricked, convinced, or otherwise leveraged into doing what another person wishes. Note this Condition as Leveraged (Character). You may have Leveraged multiple times, for different characters. Any time that character requests something of yours, you may shed this Condition if your character does as requested, without rolling to resist.",
+        "skills": "Empathy, Persuasion, Subterfuge",
+        "resolution": "Shed the Condition as noted; turn the tables on the person."
+    },
+    "Lost": {
+        "name": "Lost",
+        "fullName": "Lost",
+        "isPersistent": false,
+        "description": "Your character has no idea where she is, or how to reach her target. She cannot make any headway toward her goal without first navigating and finding out where she is. This requires a successful Wits + Streetwise action (in the city) or Wits + Survival action (in the wilderness).",
+        "skills": "",
+        "resolution": "Abandoning the goal, successfully navigating."
+    },
+    "Madness": {
+        "name": "Madness",
+        "fullName": "Madness (Persistent)",
+        "isPersistent": true,
+        "description": "Your character saw or did something that jarred her loose from reality. This isn't a mental illness born of brain chemistry — that, at least, might be treatable. This madness is the product of supernatural tampering or witnessing something that humanity was never meant to comprehend. The Storyteller has a pool of dice equal to (10 - the character's Integrity). Once per chapter, the Storyteller can apply those dice as a negative modifier to any Mental or Social roll made for the character.",
+        "skills": "",
+        "resolution": "The character fails a roll because of this Condition. If you regain a dot of Integrity, lose another dot of Integrity, or achieve an exceptional success on a breaking point, you can shed this Condition."
+    },
+    "Mute": {
+        "name": "Mute",
+        "fullName": "Mute (Persistent)",
+        "isPersistent": true,
+        "description": "Your character cannot speak. Any communication must be done through writing, gestures, or hand signs. Illness, injury, or supernatural powers can inflict this Condition on a temporary basis. If this is the case, it is resolved when the character regains her voice.",
+        "skills": "",
+        "resolution": "Limitation or communication difficulty that heightens immediate danger."
+    },
+    "Notoriety": {
+        "name": "Notoriety",
+        "fullName": "Notoriety",
+        "isPersistent": false,
+        "description": "Whether or not your character actually did something heinous in the past, the wrong people think he did. This causes disgust or ostracism by the common public. Your character suffers a -2 on any Social rolls against those that know of his notoriety. If using Social Maneuvering, the character must open one extra Door if his target knows of his notoriety. Oftentimes, this Condition comes from rumors and smear campaigns.",
+        "skills": "Subterfuge, Socialize",
+        "resolution": "The story is debunked or the character's name is cleared."
+    },
+    "Obsession": {
+        "name": "Obsession",
+        "fullName": "Obsession",
+        "isPersistent": false,
+        "description": "Something's on your character's mind, and she just can't shake it. If she's abiding by that obsession, exploring that emotion, or otherwise pursuing the object of the obsession, enjoy the 9-again quality on all rolls. When she's not, you lose the 9-again quality.",
+        "skills": "",
+        "resolution": "Fulfilling the obsession, therapy."
+    },
+    "Shaken": {
+        "name": "Shaken",
+        "fullName": "Shaken",
+        "isPersistent": false,
+        "description": "Something has frightened your character extensively. Any time your character is taking an action where that fear might hinder her, you may opt to fail the roll (before you've made the roll), and shed this Condition. This Condition can be imposed by a successful degeneration roll.",
+        "skills": "Brawl, Firearms, Intimidation, Weaponry",
+        "resolution": "Fail a roll, as noted."
+    },
+    "Spooked": {
+        "name": "Spooked",
+        "fullName": "Spooked",
+        "isPersistent": false,
+        "description": "Your character has seen something supernatural — not overt enough to terrify her, but unmistakably otherworldly. How your character responds to this is up to you, but it captivates her and eats her attention. You can shed this Condition when your character's fear and fascination causes her to do something that hinders the group or complicates things (she goes off alone to investigate a strange noise, stays up all night researching, runs away instead of holding her ground, etc.).",
+        "skills": "",
+        "resolution": "Shed the Condition as noted."
+    },
+    "Steadfast": {
+        "name": "Steadfast",
+        "fullName": "Steadfast",
+        "isPersistent": false,
+        "description": "Your character is confident and resolved. When you've failed a roll, resolve this Condition to instead treat the action as if you'd rolled a single success. If the roll was a chance die, you may resolve this Condition and roll a single die instead.",
+        "skills": "",
+        "resolution": "Use the Condition, as noted."
+    },
+    "Swooned": {
+        "name": "Swooned",
+        "fullName": "Swooned",
+        "isPersistent": false,
+        "description": "Your character has butterflies in his stomach. Note this Condition as Swooned (Character). He may have multiple instances of this Condition, reflecting affection for multiple characters. He suffers a -2 to any rolls that would adversely affect the object of his affection. The object of his affection gains +2 on any Social rolls against him. If the object of the Swoon is attempting social maneuvering on the Swooned character, the impression level is considered one higher.",
+        "skills": "Persuasion, Subterfuge",
+        "resolution": "Do something for the object that puts your character in danger; opt to fail a roll to resist a social action by the object."
+    }
+};
+
+// Condition modal functions
+function openConditionModal() {
+    const modal = document.getElementById('condition-modal');
+    modal.style.display = 'block';
+    populateConditionSelector();
+}
+
+function closeConditionModal() {
+    const modal = document.getElementById('condition-modal');
+    modal.style.display = 'none';
+    document.getElementById('condition-select').value = '';
+    document.getElementById('condition-info-display').style.display = 'none';
+    document.getElementById('add-condition-btn').disabled = true;
+}
+
+function populateConditionSelector() {
+    const select = document.getElementById('condition-select');
+    select.innerHTML = '<option value="">Select a condition...</option>';
+
+    const sortedConditions = Object.keys(CONDITIONS_DATA).sort();
+    sortedConditions.forEach(conditionName => {
+        const option = document.createElement('option');
+        option.value = conditionName;
+        option.textContent = CONDITIONS_DATA[conditionName].fullName;
+        select.appendChild(option);
+    });
+}
+
+function displayConditionInfo(conditionName) {
+    const condition = CONDITIONS_DATA[conditionName];
+    if (!condition) {
+        document.getElementById('condition-info-display').style.display = 'none';
+        document.getElementById('add-condition-btn').disabled = true;
+        return;
+    }
+
+    document.getElementById('condition-name-display').textContent = condition.fullName;
+    document.getElementById('condition-description-display').textContent = condition.description;
+
+    if (condition.skills) {
+        document.getElementById('condition-skills-display').style.display = 'block';
+        document.getElementById('condition-skills-text').textContent = condition.skills;
+    } else {
+        document.getElementById('condition-skills-display').style.display = 'none';
+    }
+
+    if (condition.resolution) {
+        document.getElementById('condition-resolution-display').style.display = 'block';
+        document.getElementById('condition-resolution-text').textContent = condition.resolution;
+    } else {
+        document.getElementById('condition-resolution-display').style.display = 'none';
+    }
+
+    document.getElementById('condition-info-display').style.display = 'block';
+    document.getElementById('add-condition-btn').disabled = false;
+}
+
+function addSelectedCondition() {
+    const select = document.getElementById('condition-select');
+    const conditionName = select.value;
+
+    if (conditionName && characterData) {
+        characterData.character.conditions.push(conditionName);
+        setEdited();
+        render();
+        closeConditionModal();
+    }
+}
+
+function getConditionTooltip(conditionName) {
+    const condition = CONDITIONS_DATA[conditionName];
+    if (!condition) return '';
+
+    let tooltip = `<strong>${condition.fullName}</strong><br>`;
+    tooltip += condition.description;
+
+    if (condition.skills) {
+        tooltip += `<br><br><strong>Example Skills:</strong> ${condition.skills}`;
+    }
+
+    if (condition.resolution) {
+        tooltip += `<br><br><strong>Resolution:</strong> ${condition.resolution}`;
+    }
+
+    return tooltip;
+}
+</script>

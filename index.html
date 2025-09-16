@@ -238,6 +238,55 @@ body {
   align-items: center;
   margin: 0px 0px 10px 0px;
 }
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -150px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+.condition-info {
+  margin-bottom: 15px;
+}
+.condition-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.condition-details {
+  margin-left: 10px;
+}
+.condition-details div {
+  margin-bottom: 5px;
+}
 .hidden {
   display: none;
 }
@@ -408,6 +457,32 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="condition-modal" class="modal">
+  <div class="modal-content" style="width: 500px;">
+    <span class="close-button">&times;</span>
+    <h2>Add Condition</h2>
+    <label for="condition-select">Condition:</label>
+    <select id="condition-select">
+      <option value="">Select a condition...</option>
+    </select>
+    <div id="condition-info-display" class="condition-info" style="display: none;">
+      <div class="condition-header" id="condition-name-display"></div>
+      <div class="condition-details">
+        <div id="condition-description-display"></div>
+        <div id="condition-skills-display" style="display: none;">
+          <strong>Example Skills:</strong> <span id="condition-skills-text"></span>
+        </div>
+        <div id="condition-resolution-display" style="display: none;">
+          <strong>Resolution:</strong> <span id="condition-resolution-text"></span>
+        </div>
+      </div>
+    </div>
+    <button id="add-condition-btn" disabled>Add Condition</button>
+    <button id="cancel-condition-btn">Cancel</button>
+  </div>
+</div>
+
+<?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 
