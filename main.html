@@ -63,7 +63,18 @@ function setValueByPath(obj, path, value) {
     for (let i = 0; i < keys.length - 1; i++) {
         current = current[keys[i]];
     }
-    current[keys[keys.length - 1]] = value;
+
+    // Convert numeric strings to numbers
+    let convertedValue = value;
+    if (typeof value === 'string' && !isNaN(value) && !isNaN(parseFloat(value)) && value.trim() !== '') {
+        convertedValue = parseInt(value);
+        // Use parseFloat if it's a decimal number
+        if (value.includes('.')) {
+            convertedValue = parseFloat(value);
+        }
+    }
+
+    current[keys[keys.length - 1]] = convertedValue;
 }
 
 function saveHeaderEdit(buttonElement, dataPath) {
@@ -173,7 +184,8 @@ function updateValue(category, subcategory, name, newValue) {
 
     if (category === 'beats' && newValue === 5) {
         characterData.character.beats = 0;
-        characterData.character.experiences.total += 1;
+        // Ensure total is a number before adding to it
+        characterData.character.experiences.total = parseInt(characterData.character.experiences.total) + 1;
     } else {
         if (subcategory) {
             characterData.character[category][subcategory][name] = newValue;
@@ -747,8 +759,8 @@ function populateSheet(data) {
     character.conditions.forEach((condition, index) => {
         const tooltipContent = getConditionTooltip(condition);
         const conditionHtml = tooltipContent ?
-            `<span class="tooltip" onclick="makeEditable(this, 'conditions.${index}')">${condition}<span class="tooltiptext">${tooltipContent}</span></span>` :
-            `<span onclick="makeEditable(this, 'conditions.${index}')">${condition}</span>`;
+            `<span class="tooltip">${condition}<span class="tooltiptext">${tooltipContent}</span></span>` :
+            `<span>${condition}</span>`;
         conditionsEl.innerHTML += `<div class="item">${conditionHtml}<span class="delete-icon" onclick="deleteListItem('conditions', ${index})">🗑</span></div>`;
     });
     conditionsEl.innerHTML += `<a class="add-link" onclick="addListItem('conditions')">Add new</a>`;
