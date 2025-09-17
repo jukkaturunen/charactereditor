@@ -192,6 +192,8 @@ function addListItem(category) {
         openSpecialtyModal();
     } else if (category === 'conditions') {
         openConditionModal();
+    } else if (category === 'aspirations') {
+        openAspirationModal();
     } else if (category === 'weapons') {
         const name = prompt('Enter weapon name:');
         if (name) {
@@ -526,6 +528,24 @@ document.addEventListener('DOMContentLoaded', () => {
         displayConditionInfo(selectedCondition);
     });
 
+    // Aspiration modal handlers
+    const aspirationModal = document.getElementById('aspiration-modal');
+    const aspirationCloseButton = aspirationModal.querySelector('.close-button');
+    const addAspirationButton = aspirationModal.querySelector('#add-aspiration-btn');
+    const cancelAspirationButton = aspirationModal.querySelector('#cancel-aspiration-btn');
+    const aspirationInput = document.getElementById('aspiration-input');
+
+    aspirationCloseButton.onclick = closeAspirationModal;
+    cancelAspirationButton.onclick = closeAspirationModal;
+    addAspirationButton.onclick = addAspiration;
+
+    // Allow Enter key to add aspiration
+    aspirationInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addAspiration();
+        }
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -568,6 +588,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeSpecialtyModal();
         } else if (event.target == conditionModal) {
             closeConditionModal();
+        } else if (event.target == aspirationModal) {
+            closeAspirationModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -734,7 +756,7 @@ function populateSheet(data) {
     const aspirationsEl = document.getElementById('aspirations');
     aspirationsEl.innerHTML = '<h3>Aspirations</h3>';
     character.aspirations.forEach((aspiration, index) => {
-        aspirationsEl.innerHTML += `<div class="item"><span onclick="makeEditable(this, 'aspirations.${index}')">${aspiration}</span><span class="delete-icon" onclick="deleteListItem('aspirations', ${index})">🗑</span></div>`;
+        aspirationsEl.innerHTML += `<div class="item"><span onclick="makeAspirationEditable(this, ${index})">${aspiration}</span><span class="delete-icon" onclick="deleteListItem('aspirations', ${index})">🗑</span></div>`;
     });
     aspirationsEl.innerHTML += `<a class="add-link" onclick="addListItem('aspirations')">Add new</a>`;
 

@@ -490,7 +490,19 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="aspiration-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Add Aspiration</h2>
+    <label for="aspiration-input">Aspiration:</label>
+    <input type="text" id="aspiration-input" placeholder="Enter aspiration">
+    <button id="add-aspiration-btn">Add</button>
+    <button id="cancel-aspiration-btn">Cancel</button>
+  </div>
+</div>
+
 <?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('aspirations').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 

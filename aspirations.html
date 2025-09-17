@@ -1,0 +1,61 @@
+<script>
+// Aspiration modal functions
+function openAspirationModal() {
+    const modal = document.getElementById('aspiration-modal');
+    modal.style.display = 'block';
+    document.getElementById('aspiration-input').focus();
+}
+
+function closeAspirationModal() {
+    const modal = document.getElementById('aspiration-modal');
+    modal.style.display = 'none';
+    document.getElementById('aspiration-input').value = '';
+}
+
+function addAspiration() {
+    const input = document.getElementById('aspiration-input');
+    const aspirationText = input.value.trim();
+
+    if (aspirationText && characterData) {
+        characterData.character.aspirations.push(aspirationText);
+        setEdited();
+        render();
+        closeAspirationModal();
+    }
+}
+
+// Inline editing functions for aspirations
+function makeAspirationEditable(element, index) {
+    if (element.querySelector('input')) return; // Already editing
+    const currentValue = element.textContent;
+
+    element.innerHTML = `
+        <input type="text" value="${currentValue}" style="width: 200px;" onkeypress="handleAspirationKeypress(event, this, ${index})" onblur="saveAspirationEdit(this, ${index})">
+        <button onclick="saveAspirationEdit(this.previousElementSibling, ${index})">✓</button>
+        <button onclick="render()">✗</button>
+    `;
+
+    const input = element.querySelector('input');
+    input.focus();
+    input.select();
+}
+
+function handleAspirationKeypress(event, input, index) {
+    if (event.key === 'Enter') {
+        saveAspirationEdit(input, index);
+    } else if (event.key === 'Escape') {
+        render();
+    }
+}
+
+function saveAspirationEdit(input, index) {
+    const newValue = input.value.trim();
+    if (newValue && characterData) {
+        characterData.character.aspirations[index] = newValue;
+        setEdited();
+        render();
+    } else {
+        render(); // Cancel edit if empty
+    }
+}
+</script>
