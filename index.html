@@ -10,11 +10,19 @@
 <style>
 body {
   font-family: 'Roboto Condensed', Roboto, Helvetica, sans-serif;
-  background-color: #f0f0f0;
+  /*background-color: #f0f0f0;*/
+  color: #262E37;
   margin: 0;
-  background-image: url('images/bg.png');
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  height: 100%;
+  background: #262E37;
+  background: -webkit-linear-gradient(180deg,rgba(38, 46, 55, 1) 0%, rgba(255, 255, 255, 1) 100%) no-repeat;
+  background: -moz-linear-gradient(180deg,rgba(38, 46, 55, 1) 0%, rgba(255, 255, 255, 1) 100%) no-repeat;
+  background: linear-gradient(180deg,rgba(38, 46, 55, 1) 0%, rgba(255, 255, 255, 1) 100%) no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(
+    startColorstr="#262E37",
+    endColorstr="#FFFFFF",
+    GradientType=0
+  );
 }
 .sheet {
   background-color: white;
@@ -32,7 +40,7 @@ body {
   align-items: center;
   justify-content: space-between;
   background: #262e37;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #3f3f3f;
 }
 #logo {
   color: white;
