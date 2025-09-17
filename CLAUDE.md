@@ -14,6 +14,7 @@ This is a web-based character sheet editor for World of Darkness tabletop RPG. T
 - **index.html**: Main application entry point with character selector and sheet layout
 - **main.html**: Core character sheet interface with complete form layout
 - **json-editor.html**: Standalone JSON editor component implementation
+- **conditions.html**: Conditions database and modal functionality for condition management
 - **js/main.js**: Primary application logic, character data management, and UI interactions
 - **js/json-editor.js**: Custom web component for editing character merits in JSON format
 - **style.css**: Styling for the character sheet interface
@@ -50,10 +51,15 @@ The application uses a comprehensive JSON data structure to represent characters
 - **Interactive dot system**: Click dots to set attribute/skill values with visual feedback
 - **Advanced health tracking**: Visual damage system for bashing/lethal/aggravated damage types
 - **Skill specialties**: Modal-based system for adding skill specializations with dropdown selection
+- **Enhanced conditions system**:
+  - Modal-based condition selection with comprehensive database of 22 Chronicles of Darkness conditions
+  - Hover tooltips showing detailed condition information (description, skills, resolution)
+  - Structured condition data with persistent/temporary indicators
 - **Weapons system**: Comprehensive weapon tracking with detailed statistics
 - **JSON editor**: Custom web component for editing merits with syntax highlighting and validation
 - **Inline editing**: Click-to-edit functionality for character information fields
 - **Experience tracking**: Beats system that automatically converts to experience points
+- **Dynamic status indicators**: Real-time save status with loading spinners and "Up to date" feedback
 - **Conditions and aspirations**: Dynamic list management for character traits
 - **Auto-save indicators**: Visual feedback when character data needs saving
 - **Responsive layout**: Grid-based design that adapts to different screen sizes
@@ -135,7 +141,15 @@ Character data is managed through several global variables and functions in `mai
 - `addListItem(category)`: Adds items to conditions, aspirations, weapons, etc.
 - `deleteListItem(category, key)`: Removes items from character lists
 - `openSpecialtyModal()`: Opens skill specialty selection interface
+- `openConditionModal()`: Opens condition selection modal with database lookup
 - `populateWeapons(weapons)`: Renders weapon statistics table
+- `setUpToDate()`: Sets character status to "Up to date" when no changes pending
+
+#### Condition Management Functions
+- `populateConditionSelector()`: Populates condition dropdown with sorted list
+- `displayConditionInfo(conditionName)`: Shows detailed condition information in modal
+- `addSelectedCondition()`: Adds selected condition to character and updates UI
+- `getConditionTooltip(conditionName)`: Generates tooltip content for condition hover
 
 ## Custom Components
 
@@ -145,3 +159,36 @@ The `json-editor` web component (`js/json-editor.js`) provides:
 - Real-time validation
 - Custom styling with color-coded elements
 - Caret position management during formatting
+- **Fix for formatting loss**: Editor content is only updated when merits data actually changes, preserving user formatting during other character edits
+
+### Conditions Database
+The `conditions.html` file contains:
+- **CONDITIONS_DATA**: Complete database of 22 Chronicles of Darkness conditions
+- Each condition includes:
+  - `name`: Short condition name
+  - `fullName`: Display name with persistent indicator
+  - `isPersistent`: Boolean flag for long-lasting conditions
+  - `description`: Complete rules description
+  - `skills`: Example skills affected (if applicable)
+  - `resolution`: How the condition can be resolved
+- Modal functions for condition selection and information display
+- Tooltip generation for hover functionality
+
+## User Interface Improvements
+
+### Visual Design Updates
+- **Dark header**: Site header now uses #262e37 background with minimal padding
+- **Text logo**: Replaced image logo with white "Chronicles of Darkness" text (each word on separate line)
+- **Status indicators**: Character edit status always visible with either:
+  - Red "Save changes" link (underlined) when edits pending
+  - Green "Up to date" text when character is saved
+- **Loading feedback**: Spinners appear during load and save operations
+- **Improved spacing**: Added gaps between dots and boxes in Health, Willpower, and Integrity sections
+
+### Enhanced Modals
+- **Condition Selection Modal**: Comprehensive interface for adding conditions with:
+  - Dropdown selector with all 22 conditions
+  - Real-time information display showing description, skills, and resolution
+  - Add button enabled only when valid condition selected
+- **Hover Tooltips**: Rich tooltips for existing conditions showing full rules information
+- **Modal Management**: Consistent close behavior (click outside, X button, Cancel button)
