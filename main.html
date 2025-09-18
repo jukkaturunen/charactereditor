@@ -91,14 +91,25 @@ function makeEditable(element, dataPath) {
     const parent = element.parentElement;
     const label = parent.firstElementChild.textContent;
 
+    // Check if this is in the stats and xp section
+    const isStatsOrXp = dataPath.includes('size') || dataPath.includes('speed') || dataPath.includes('defense') ||
+                        dataPath.includes('armor') || dataPath.includes('initiative_mod') || dataPath.includes('experiences.total');
+
+    const inputWidth = isStatsOrXp ? '20%' : '70%';
+    const alignment = isStatsOrXp ? 'text-align: right;' : '';
+
     parent.innerHTML = `
         <span>${label}</span>
-        <span>
-            <input type="text" value="${currentValue}" style="width: 70%;">
+        <span style="${alignment}">
+            <input type="text" value="${currentValue}" style="width: ${inputWidth};">
             <button onclick="saveHeaderEdit(this, '${dataPath}')">✓</button>
             <button onclick="render()">✗</button>
         </span>
     `;
+
+    const input = parent.querySelector('input');
+    input.focus();
+    input.select();
 }
 
 function toggleSection(sectionId, toggleElement) {
