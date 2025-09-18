@@ -145,20 +145,38 @@ function renderBoxes(category, name, value, maxBoxes = 10) {
     return boxesHtml;
 }
 
-function renderHealthDamage(damageState) {
+function renderHealthDamage(damageState, maxHealth) {
     let boxesHtml = '<div class="boxes">';
     damageState.forEach((damageType, index) => {
-        boxesHtml += `<div class="box" onclick="updateHealthDamage(${index})">`;
-        switch (damageType) {
-            case 1: // Bashing
-                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
-                break;
-            case 2: // Lethal
-                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
-                break;
-            case 3: // Aggravated
-                boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/><line x1="7.5" y1="0" x2="7.5" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="7.5" x2="15" y2="7.5" stroke="black" stroke-width="1"/></svg>';
-                break;
+        // Determine if box is active (within max health) or inactive
+        const isActive = index < maxHealth;
+
+        // Determine penalty color for last 3 active boxes
+        let penaltyClass = '';
+        if (isActive) {
+            const remainingActive = maxHealth - index;
+            if (remainingActive === 3) penaltyClass = ' penalty-1'; // Yellow
+            else if (remainingActive === 2) penaltyClass = ' penalty-2'; // Light orange
+            else if (remainingActive === 1) penaltyClass = ' penalty-3'; // Darker orange/red
+        }
+
+        const boxClass = isActive ? `box${penaltyClass}` : 'box inactive';
+        const clickHandler = isActive ? `onclick="updateHealthDamage(${index})"` : '';
+
+        boxesHtml += `<div class="${boxClass}" ${clickHandler}>`;
+
+        if (isActive) {
+            switch (damageType) {
+                case 1: // Bashing
+                    boxesHtml += '<svg width="15" height="15"><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
+                    break;
+                case 2: // Lethal
+                    boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/></svg>';
+                    break;
+                case 3: // Aggravated
+                    boxesHtml += '<svg width="15" height="15"><line x1="0" y1="0" x2="15" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="15" x2="15" y2="0" stroke="black" stroke-width="1"/><line x1="7.5" y1="0" x2="7.5" y2="15" stroke="black" stroke-width="1"/><line x1="0" y1="7.5" x2="15" y2="7.5" stroke="black" stroke-width="1"/></svg>';
+                    break;
+            }
         }
         boxesHtml += '</div>';
     });
@@ -842,7 +860,7 @@ function populateSheet(data) {
         for (let i = 0; i < damage.bashing; i++) healthDamageState.push(1);
         while (healthDamageState.length < 10) healthDamageState.push(0);
     }
-    healthEl.innerHTML += renderHealthDamage(healthDamageState);
+    healthEl.innerHTML += renderHealthDamage(healthDamageState, character.health.max);
 
     const willpowerEl = document.getElementById('willpower');
     willpowerEl.innerHTML = '<h3>Willpower</h3>';
