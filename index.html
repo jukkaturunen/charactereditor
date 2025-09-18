@@ -570,8 +570,36 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="weapon-modal" class="modal">
+  <div class="modal-content" style="width: 500px;">
+    <span class="close-button">&times;</span>
+    <h2>Add Weapon</h2>
+    <label for="weapon-select">Weapon:</label>
+    <select id="weapon-select">
+      <option value="">Select a weapon...</option>
+    </select>
+    <div id="weapon-info-display" class="weapon-info" style="display: none;">
+      <div class="weapon-header" id="weapon-name-display"></div>
+      <div class="weapon-details">
+        <div><strong>Damage:</strong> <span id="weapon-dmg-display"></span></div>
+        <div><strong>Range:</strong> <span id="weapon-range-display"></span></div>
+        <div><strong>Clip:</strong> <span id="weapon-clip-display"></span></div>
+        <div><strong>Initiative:</strong> <span id="weapon-init-display"></span></div>
+        <div><strong>Strength:</strong> <span id="weapon-str-display"></span></div>
+        <div><strong>Size:</strong> <span id="weapon-size-display"></span></div>
+        <div id="weapon-special-display" style="display: none;">
+          <strong>Special:</strong> <span id="weapon-special-text"></span>
+        </div>
+      </div>
+    </div>
+    <button id="add-weapon-btn" disabled>Add Weapon</button>
+    <button id="cancel-weapon-btn">Cancel</button>
+  </div>
+</div>
+
 <?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('aspirations').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('weapons').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 

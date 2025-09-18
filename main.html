@@ -29,7 +29,7 @@ function saveChanges() {
         // Show saving state
         const saveLink = document.getElementById('save-changes-link');
         const originalText = saveLink.textContent;
-        saveLink.innerHTML = '<div class="loading-text">Saving<div class="spinner"></div></div>';
+        saveLink.innerHTML = '<div class="loading-text">Saving<div class="spinner-skull">💀</div></div>';
         saveLink.style.pointerEvents = 'none';
 
         google.script.run
@@ -207,27 +207,7 @@ function addListItem(category) {
     } else if (category === 'aspirations') {
         openAspirationModal();
     } else if (category === 'weapons') {
-        const name = prompt('Enter weapon name:');
-        if (name) {
-            const dmg = prompt('Enter damage:');
-            const range = prompt('Enter range (e.g., 20/40/80 or melee):');
-            const clip = prompt('Enter clip size:');
-            const init = prompt('Enter initiative modifier:');
-            const str = prompt('Enter strength requirement:');
-            const size = prompt('Enter size:');
-
-            let rangeData;
-            if (range.includes('/')) {
-                const parts = range.split('/');
-                rangeData = { short: parts[0], medium: parts[1], long: parts[2] };
-            } else {
-                rangeData = range;
-            }
-
-            characterData.character.weapons[name] = { dmg, range: rangeData, clip, init, str, size };
-            setEdited();
-            render();
-        }
+        openWeaponModal();
     } else {
         const singular = category.slice(0, -1);
         const newValue = prompt(`Enter new ${singular}:`);
@@ -558,6 +538,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Weapon modal handlers
+    const weaponModal = document.getElementById('weapon-modal');
+    const weaponCloseButton = weaponModal.querySelector('.close-button');
+    const addWeaponButton = weaponModal.querySelector('#add-weapon-btn');
+    const cancelWeaponButton = weaponModal.querySelector('#cancel-weapon-btn');
+    const weaponSelect = document.getElementById('weapon-select');
+
+    weaponCloseButton.onclick = closeWeaponModal;
+    cancelWeaponButton.onclick = closeWeaponModal;
+    addWeaponButton.onclick = addSelectedWeapon;
+
+    weaponSelect.addEventListener('change', () => {
+        const selectedWeapon = weaponSelect.value;
+        displayWeaponInfo(selectedWeapon);
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -602,6 +598,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeConditionModal();
         } else if (event.target == aspirationModal) {
             closeAspirationModal();
+        } else if (event.target == weaponModal) {
+            closeWeaponModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -639,18 +637,25 @@ function populateSpecialties(specialties) {
 
 function populateWeapons(weapons) {
     const weaponsEl = document.getElementById('weapons-content');
-    let tableHtml = '<h3>Weapons</h3><table class="weapons-table"><tr><th>Name</th><th>Dmg</th><th>Range</th><th>Clip</th><th>Init</th><th>Str</th><th>Size</th><th></th></tr>';
+    let tableHtml = '<h3>Weapons</h3><table class="weapons-table"><tr><th>Name</th><th>Dmg</th><th>Range</th><th>Clip</th><th>Init</th><th>Str</th><th>Size</th><th>Special</th><th></th></tr>';
     for (const name in weapons) {
         const weapon = weapons[name];
         let range = weapon.range;
         if (typeof range === 'object') {
             range = `${range.short}/${range.medium}/${range.long}`;
         }
-        tableHtml += `<tr><td>${name}</td><td>${weapon.dmg}</td><td>${range}</td><td>${weapon.clip}</td><td>${weapon.init}</td><td>${weapon.str}</td><td>${weapon.size}</td><td><span class="delete-icon" onclick="deleteListItem('weapons', '${name}')">🗑</span></td></tr>`;
+
+        // Handle special field - show tooltip icon if weapon has special properties
+        const tooltipContent = getWeaponSpecialTooltip(name);
+        const specialHtml = tooltipContent ?
+            `<span class="tooltip">📋<span class="tooltiptext">${tooltipContent}</span></span>` :
+            '-';
+
+        tableHtml += `<tr><td>${name}</td><td>${weapon.dmg}</td><td>${range}</td><td>${weapon.clip || '-'}</td><td>${weapon.init}</td><td>${weapon.str}</td><td>${weapon.size}</td><td>${specialHtml}</td><td><span class="delete-icon" onclick="deleteListItem('weapons', '${name}')">🗑</span></td></tr>`;
     }
     tableHtml += '</table>';
     weaponsEl.innerHTML = tableHtml;
-    weaponsEl.innerHTML += `<a class="add-link" onclick="addListItem('weapons')">Add new</a>`;
+    weaponsEl.innerHTML += `<div class="add-link-wrap"><a class="add-link" onclick="addListItem('weapons')">Add new</a></div>`;
 }
 
 function populateSheet(data) {

@@ -1,0 +1,341 @@
+<script>
+// Chronicles of Darkness Weapons Data
+// Parsed from rules/weapons.md
+
+const WEAPONS_DATA = {
+    "Revolver, light": {
+        dmg: 1,
+        range: { short: 20, medium: 40, long: 80 },
+        clip: 6,
+        init: 0,
+        str: 2,
+        size: 1,
+        special: null
+    },
+    "Revolver, heavy": {
+        dmg: 2,
+        range: { short: 35, medium: 70, long: 140 },
+        clip: 6,
+        init: -2,
+        str: 3,
+        size: 1,
+        special: null
+    },
+    "Pistol, light": {
+        dmg: 1,
+        range: { short: 20, medium: 40, long: 80 },
+        clip: 17,
+        init: 0,
+        str: 2,
+        size: 1,
+        special: "Can hold extra bullet in chamber."
+    },
+    "Pistol, heavy": {
+        dmg: 2,
+        range: { short: 30, medium: 60, long: 120 },
+        clip: 7,
+        init: -2,
+        str: 3,
+        size: 1,
+        special: "Can hold extra bullet in chamber."
+    },
+    "SMG, small": {
+        dmg: 1,
+        range: { short: 25, medium: 50, long: 100 },
+        clip: 30,
+        init: -2,
+        str: 2,
+        size: 1,
+        special: "Can hold extra bullet in chamber. Capable of autofire, including short bursts, medium bursts, and long bursts"
+    },
+    "SMG, large": {
+        dmg: 2,
+        range: { short: 50, medium: 100, long: 200 },
+        clip: 30,
+        init: -3,
+        str: 3,
+        size: 2,
+        special: "Can hold extra bullet in chamber. Capable of autofire, including short bursts, medium bursts, and long bursts"
+    },
+    "Rifle": {
+        dmg: 4,
+        range: { short: 200, medium: 400, long: 800 },
+        clip: 5,
+        init: -5,
+        str: 2,
+        size: 3,
+        special: "Can hold extra bullet in chamber."
+    },
+    "Assault Rifle": {
+        dmg: 3,
+        range: { short: 150, medium: 300, long: 600 },
+        clip: 42,
+        init: -3,
+        str: 3,
+        size: 3,
+        special: "Can hold extra bullet in chamber. Capable of autofire, including short bursts, medium bursts, and long bursts"
+    },
+    "Shotgun": {
+        dmg: 3,
+        range: { short: 20, medium: 40, long: 80 },
+        clip: 5,
+        init: -4,
+        str: 3,
+        size: 2,
+        special: "Can hold extra bullet in chamber. Attack rolls gain the 9-again quality"
+    },
+    "Crossbow": {
+        dmg: 2,
+        range: { short: 40, medium: 80, long: 160 },
+        clip: 1,
+        init: -5,
+        str: 3,
+        size: 3,
+        special: "Crossbows take three turns to reload between shots. A crossbow can be used to deliver a stake through the heart (–3 penalty to attack rolls; must deal at least 5 damage in one attack)"
+    },
+    "Sap": {
+        dmg: 0,
+        range: "melee",
+        clip: null,
+        init: -1,
+        str: 1,
+        size: 1,
+        special: "Stun, double the weapon bonus for purposes of the Stun Tilt"
+    },
+    "Brass Knuckles": {
+        dmg: 0,
+        range: "melee",
+        clip: null,
+        init: 0,
+        str: 1,
+        size: 1,
+        special: "Uses Brawl to attack"
+    },
+    "Baton": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: -1,
+        str: 2,
+        size: 2,
+        special: null
+    },
+    "Crowbar": {
+        dmg: 2,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 2,
+        size: 2,
+        special: null
+    },
+    "Tire Iron": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: -3,
+        str: 2,
+        size: 2,
+        special: "+1 Defense"
+    },
+    "Chain": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: -3,
+        str: 2,
+        size: 2,
+        special: "Grapple, add the chain's weapon bonus to your dice pool when grappling"
+    },
+    "Shield (small)": {
+        dmg: 0,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 2,
+        size: 2,
+        special: "Concealed, A character who wields a shield but doesn't use it to attack can add its Size to his Defense, and uses its Size as a concealment modifier against ranged attacks"
+    },
+    "Shield (large)": {
+        dmg: 2,
+        range: "melee",
+        clip: null,
+        init: -4,
+        str: 3,
+        size: 3,
+        special: "Concealed, A character who wields a shield but doesn't use it to attack can add its Size to his Defense, and uses its Size as a concealment modifier against ranged attacks"
+    },
+    "Knife": {
+        dmg: 0,
+        range: "melee",
+        clip: null,
+        init: -1,
+        str: 1,
+        size: 1,
+        special: null
+    },
+    "Rapier": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 1,
+        size: 2,
+        special: "Armor piercing 1"
+    },
+    "Machete": {
+        dmg: 2,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 2,
+        size: 2,
+        special: null
+    },
+    "Hatchet": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 1,
+        size: 1,
+        special: null
+    },
+    "Fire Axe": {
+        dmg: 3,
+        range: "melee",
+        clip: null,
+        init: -4,
+        str: 3,
+        size: 3,
+        special: "9-again, two-handed"
+    },
+    "Chainsaw": {
+        dmg: 5,
+        range: "melee",
+        clip: null,
+        init: -6,
+        str: 4,
+        size: 3,
+        special: "9-again, two-handed"
+    },
+    "Stake": {
+        dmg: 0,
+        range: "melee",
+        clip: null,
+        init: -4,
+        str: 1,
+        size: 1,
+        special: "A stake must target the heart (–3 penalty to attack rolls) and must deal at least 5 damage in one attack"
+    },
+    "Spear": {
+        dmg: 2,
+        range: "melee",
+        clip: null,
+        init: -2,
+        str: 2,
+        size: 4,
+        special: "+1 Defense, two-handed, The reach of a spear gives a +1 Defense bonus against opponents who are unarmed or wield weapons of Size 1"
+    },
+    "Stun gun (melee)": {
+        dmg: 1,
+        range: "melee",
+        clip: null,
+        init: 1,
+        str: 1,
+        size: 1,
+        special: "Stun; bonus successes don't add to modifier for damage"
+    }
+};
+
+// Weapon modal functions
+function openWeaponModal() {
+    const modal = document.getElementById('weapon-modal');
+    modal.style.display = 'block';
+    populateWeaponSelector();
+}
+
+function closeWeaponModal() {
+    const modal = document.getElementById('weapon-modal');
+    modal.style.display = 'none';
+    document.getElementById('weapon-select').value = '';
+    document.getElementById('weapon-info-display').style.display = 'none';
+    document.getElementById('add-weapon-btn').disabled = true;
+}
+
+function populateWeaponSelector() {
+    const select = document.getElementById('weapon-select');
+    select.innerHTML = '<option value="">Select a weapon...</option>';
+
+    const sortedWeapons = Object.keys(WEAPONS_DATA).sort();
+    sortedWeapons.forEach(weaponType => {
+        const option = document.createElement('option');
+        option.value = weaponType;
+        option.textContent = weaponType;
+        select.appendChild(option);
+    });
+}
+
+function displayWeaponInfo(weaponType) {
+    const weapon = WEAPONS_DATA[weaponType];
+    if (!weapon) {
+        document.getElementById('weapon-info-display').style.display = 'none';
+        document.getElementById('add-weapon-btn').disabled = true;
+        return;
+    }
+
+    document.getElementById('weapon-name-display').textContent = weaponType;
+    document.getElementById('weapon-dmg-display').textContent = weapon.dmg;
+
+    // Format range display
+    let rangeText;
+    if (typeof weapon.range === 'object') {
+        rangeText = `${weapon.range.short}/${weapon.range.medium}/${weapon.range.long}`;
+    } else {
+        rangeText = weapon.range;
+    }
+    document.getElementById('weapon-range-display').textContent = rangeText;
+
+    document.getElementById('weapon-clip-display').textContent = weapon.clip || '-';
+    document.getElementById('weapon-init-display').textContent = weapon.init;
+    document.getElementById('weapon-str-display').textContent = weapon.str;
+    document.getElementById('weapon-size-display').textContent = weapon.size;
+
+    if (weapon.special) {
+        document.getElementById('weapon-special-display').style.display = 'block';
+        document.getElementById('weapon-special-text').textContent = weapon.special;
+    } else {
+        document.getElementById('weapon-special-display').style.display = 'none';
+    }
+
+    document.getElementById('weapon-info-display').style.display = 'block';
+    document.getElementById('add-weapon-btn').disabled = false;
+}
+
+function addSelectedWeapon() {
+    const select = document.getElementById('weapon-select');
+    const weaponType = select.value;
+
+    if (weaponType && characterData) {
+        const weaponData = WEAPONS_DATA[weaponType];
+        characterData.character.weapons[weaponType] = {
+            dmg: weaponData.dmg,
+            range: weaponData.range,
+            clip: weaponData.clip,
+            init: weaponData.init,
+            str: weaponData.str,
+            size: weaponData.size
+        };
+        setEdited();
+        render();
+        closeWeaponModal();
+    }
+}
+
+function getWeaponSpecialTooltip(weaponType) {
+    const weapon = WEAPONS_DATA[weaponType];
+    if (!weapon || !weapon.special) return '';
+
+    return `<strong>${weaponType}</strong><br>${weapon.special}`;
+}
+</script>
