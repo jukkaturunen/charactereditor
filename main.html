@@ -95,7 +95,7 @@ function makeEditable(element, dataPath) {
     const isStatsOrXp = dataPath.includes('size') || dataPath.includes('speed') || dataPath.includes('defense') ||
                         dataPath.includes('armor') || dataPath.includes('initiative_mod') || dataPath.includes('experiences.total');
 
-    const inputWidth = isStatsOrXp ? '20%' : '70%';
+    const inputWidth = isStatsOrXp ? '20%' : '60%';
     const alignment = isStatsOrXp ? 'text-align: right;' : '';
 
     parent.innerHTML = `
@@ -629,6 +629,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Experience modal handlers
+    const experienceModal = document.getElementById('experience-modal');
+    const experienceCloseButton = experienceModal.querySelector('.close-button');
+    const addSpentXpButton = experienceModal.querySelector('#add-spent-xp-btn');
+    const cancelExperienceButton = experienceModal.querySelector('#cancel-experience-btn');
+    const spentOnInput = document.getElementById('xp-spent-on-input');
+    const amountInput = document.getElementById('xp-amount-input');
+
+    experienceCloseButton.onclick = closeExperienceModal;
+    cancelExperienceButton.onclick = closeExperienceModal;
+    addSpentXpButton.onclick = addSpentXp;
+
+    // Allow Enter key to add spent XP
+    spentOnInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            amountInput.focus();
+        }
+    });
+
+    amountInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addSpentXp();
+        }
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -679,6 +704,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeDeleteModal();
         } else if (event.target == equipmentModal) {
             closeEquipmentModal();
+        } else if (event.target == experienceModal) {
+            closeExperienceModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -833,7 +860,7 @@ function populateSheet(data) {
         <div class="item"><span>Defense:</span> <span id="defense" onclick="makeEditable(this, 'defense')">${character.defense}</span></div>
         <div class="item"><span>Armor:</span> <span id="armor" onclick="makeEditable(this, 'armor')">${character.armor}</span></div>
         <div class="item"><span>Initiative Mod:</span> <span id="initiative_mod" onclick="makeEditable(this, 'initiative_mod')">${character.initiative_mod}</span></div>
-        <h4 class="xp-subheader">Experience</h4>
+        <h4 class="xp-subheader" onclick="openExperienceModal()">Experience</h4>
         <div class="item"><span>Beats:</span> ${renderDots('beats', '', '', character.beats, 5)}</div>
         <div class="item"><span>Total:</span> <span id="total_xp" onclick="makeEditable(this, 'experiences.total')">${character.experiences.total}</span></div>
     `;

@@ -1,0 +1,73 @@
+<script>
+// Experience modal functions
+function openExperienceModal() {
+    const modal = document.getElementById('experience-modal');
+    modal.style.display = 'block';
+    populateSpentXpList();
+}
+
+function closeExperienceModal() {
+    const modal = document.getElementById('experience-modal');
+    modal.style.display = 'none';
+    document.getElementById('xp-spent-on-input').value = '';
+    document.getElementById('xp-amount-input').value = '';
+}
+
+function populateSpentXpList() {
+    const listEl = document.getElementById('spent-xp-list');
+    listEl.innerHTML = '';
+
+    if (!characterData.character.experiences.spent_on) {
+        characterData.character.experiences.spent_on = {};
+    }
+
+    const spentOn = characterData.character.experiences.spent_on;
+    const keys = Object.keys(spentOn);
+
+    if (keys.length === 0) {
+        listEl.innerHTML = '<p style="color: #999; font-style: italic;">No experience spent yet.</p>';
+        return;
+    }
+
+    keys.forEach(key => {
+        const value = spentOn[key];
+        listEl.innerHTML += `
+            <div class="item" style="margin-bottom: 5px;">
+                <span><strong>${key}:</strong> ${value} XP</span>
+                <span class="delete-icon" onclick="deleteSpentXp('${key}')" style="cursor: pointer;">🗑</span>
+            </div>
+        `;
+    });
+}
+
+function addSpentXp() {
+    const spentOnInput = document.getElementById('xp-spent-on-input');
+    const amountInput = document.getElementById('xp-amount-input');
+
+    const spentOn = spentOnInput.value.trim();
+    const amount = amountInput.value.trim();
+
+    if (spentOn && amount && characterData) {
+        if (!characterData.character.experiences.spent_on) {
+            characterData.character.experiences.spent_on = {};
+        }
+
+        characterData.character.experiences.spent_on[spentOn] = amount;
+        setEdited();
+        populateSpentXpList();
+
+        // Clear inputs
+        spentOnInput.value = '';
+        amountInput.value = '';
+        spentOnInput.focus();
+    }
+}
+
+function deleteSpentXp(key) {
+    if (characterData && characterData.character.experiences.spent_on) {
+        delete characterData.character.experiences.spent_on[key];
+        setEdited();
+        populateSpentXpList();
+    }
+}
+</script>

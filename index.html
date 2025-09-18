@@ -252,8 +252,9 @@ h2 {
   font-size: 0.85em;
 }
 .delete-icon {
-  width: 14px;
-  height: 14px;
+  font-size: 10px;
+  width: 10px;
+  height: 10px;
   cursor: pointer;
   position: relative;
   top: -2px;
@@ -371,6 +372,11 @@ h2 {
   margin: 15px 0 5px 0;
   font-size: 14px;
   color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.xp-subheader:hover {
+  color: #888;
 }
 #equipment-content .item {
   margin-bottom: 0;
@@ -643,10 +649,29 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="experience-modal" class="modal">
+  <div class="modal-content" style="width: 500px;">
+    <span class="close-button">&times;</span>
+    <h2>Experience Spent</h2>
+    <div id="spent-xp-list"></div>
+    <hr style="margin: 15px 0;">
+    <h3>Add New</h3>
+    <label for="xp-spent-on-input">Spent on:</label>
+    <input type="text" id="xp-spent-on-input" placeholder="e.g., Athletics specialty">
+    <label for="xp-amount-input">Amount:</label>
+    <input type="text" id="xp-amount-input" placeholder="e.g., 3">
+    <div class="modal-buttons">
+      <button id="cancel-experience-btn">Close</button>
+      <button id="add-spent-xp-btn">Add</button>
+    </div>
+  </div>
+</div>
+
 <?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('aspirations').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('weapons').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('equipment').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('experience').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 
