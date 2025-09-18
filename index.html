@@ -410,10 +410,15 @@ h2 {
   margin-bottom: 10px;
   box-sizing: border-box;
 }
+.modal-buttons {
+  text-align: right;
+  margin-top: 15px;
+}
 .modal button {
-  padding: 8px 16px;
-  margin-right: 10px;
+  padding: 6px 12px;
+  margin-left: 10px;
   cursor: pointer;
+  font-size: 14px;
 }
 json-editor {
   display: flex;
@@ -518,8 +523,10 @@ json-editor *[part=false]         { color: #e69fc2 }
     <select id="skill-select"></select>
     <label for="specialty-input">Specialty:</label>
     <input type="text" id="specialty-input">
-    <button id="save-specialty-btn">Save</button>
-    <button id="cancel-specialty-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-specialty-btn">Cancel</button>
+      <button id="save-specialty-btn">Save</button>
+    </div>
   </div>
 </div>
 
@@ -529,8 +536,10 @@ json-editor *[part=false]         { color: #e69fc2 }
     <h2>Create New Character</h2>
     <label for="new-character-name">Character Name:</label>
     <input type="text" id="new-character-name" placeholder="Enter character name">
-    <button id="create-character-btn">Create</button>
-    <button id="cancel-new-character-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-new-character-btn">Cancel</button>
+      <button id="create-character-btn">Create</button>
+    </div>
   </div>
 </div>
 
@@ -554,8 +563,10 @@ json-editor *[part=false]         { color: #e69fc2 }
         </div>
       </div>
     </div>
-    <button id="add-condition-btn" disabled>Add Condition</button>
-    <button id="cancel-condition-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-condition-btn">Cancel</button>
+      <button id="add-condition-btn" disabled>Add Condition</button>
+    </div>
   </div>
 </div>
 
@@ -565,8 +576,10 @@ json-editor *[part=false]         { color: #e69fc2 }
     <h2>Add Aspiration</h2>
     <label for="aspiration-input">Aspiration:</label>
     <input type="text" id="aspiration-input" placeholder="Enter aspiration">
-    <button id="add-aspiration-btn">Add</button>
-    <button id="cancel-aspiration-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-aspiration-btn">Cancel</button>
+      <button id="add-aspiration-btn">Add</button>
+    </div>
   </div>
 </div>
 
@@ -592,8 +605,10 @@ json-editor *[part=false]         { color: #e69fc2 }
         </div>
       </div>
     </div>
-    <button id="add-weapon-btn" disabled>Add Weapon</button>
-    <button id="cancel-weapon-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-weapon-btn">Cancel</button>
+      <button id="add-weapon-btn" disabled>Add Weapon</button>
+    </div>
   </div>
 </div>
 
@@ -602,8 +617,10 @@ json-editor *[part=false]         { color: #e69fc2 }
     <span class="close-button">&times;</span>
     <h2>Confirm Delete</h2>
     <p id="delete-confirmation-text">Are you sure you want to delete this item?</p>
-    <button id="confirm-delete-btn" style="background: #dc3545; color: white; margin-right: 10px;">Delete</button>
-    <button id="cancel-delete-btn">Cancel</button>
+    <div class="modal-buttons">
+      <button id="cancel-delete-btn">Cancel</button>
+      <button id="confirm-delete-btn" style="background: #dc3545; color: white;">Delete</button>
+    </div>
   </div>
 </div>
 
