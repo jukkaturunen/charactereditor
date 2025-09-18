@@ -174,7 +174,7 @@ h2 {
   border: 1px solid #ccc;
   padding: 10px;
 }
-#specialties-content, #merits, #weapons-content {
+#specialties-content, #merits, #weapons-content, #equilment-content {
   margin-top: 20px;
 }
 #specialties-content .item {
@@ -372,6 +372,11 @@ h2 {
   font-size: 14px;
   color: #666;
 }
+#equipment-content .item {
+  margin-bottom: 0;
+  padding: 4px 0;
+  border-bottom: 1px dotted #dddddd;
+}
 .modal {
   display: none;
   position: fixed;
@@ -512,6 +517,7 @@ json-editor *[part=false]         { color: #e69fc2 }
         <json-editor id="merits-editor"></json-editor>
     </div>
     <div class="category" id="weapons-content"><h3>Weapons</h3></div>
+    <div class="category" id="equipment-content"><h3>Equipment</h3></div>
   </div>
 </div>
 
@@ -624,9 +630,23 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="equipment-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Add Equipment</h2>
+    <label for="equipment-input">Equipment:</label>
+    <input type="text" id="equipment-input" placeholder="Enter equipment item">
+    <div class="modal-buttons">
+      <button id="cancel-equipment-btn">Cancel</button>
+      <button id="add-equipment-btn">Add</button>
+    </div>
+  </div>
+</div>
+
 <?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('aspirations').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('weapons').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('equipment').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 

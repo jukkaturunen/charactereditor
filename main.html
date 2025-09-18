@@ -219,6 +219,8 @@ function addListItem(category) {
         openAspirationModal();
     } else if (category === 'weapons') {
         openWeaponModal();
+    } else if (category === 'equipment') {
+        openEquipmentModal();
     } else {
         const singular = category.slice(0, -1);
         const newValue = prompt(`Enter new ${singular}:`);
@@ -247,6 +249,8 @@ function deleteListItem(category, key) {
         itemName = `condition "${characterData.character[category][key]}"`;
     } else if (category === 'aspirations') {
         itemName = `aspiration "${characterData.character[category][key]}"`;
+    } else if (category === 'equipment') {
+        itemName = `equipment "${characterData.character[category][key]}"`;
     } else {
         itemName = 'this item';
     }
@@ -607,6 +611,24 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelDeleteButton.onclick = closeDeleteModal;
     confirmDeleteButton.onclick = confirmDelete;
 
+    // Equipment modal handlers
+    const equipmentModal = document.getElementById('equipment-modal');
+    const equipmentCloseButton = equipmentModal.querySelector('.close-button');
+    const addEquipmentButton = equipmentModal.querySelector('#add-equipment-btn');
+    const cancelEquipmentButton = equipmentModal.querySelector('#cancel-equipment-btn');
+    const equipmentInput = document.getElementById('equipment-input');
+
+    equipmentCloseButton.onclick = closeEquipmentModal;
+    cancelEquipmentButton.onclick = closeEquipmentModal;
+    addEquipmentButton.onclick = addEquipment;
+
+    // Allow Enter key to add equipment
+    equipmentInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addEquipment();
+        }
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -655,6 +677,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeWeaponModal();
         } else if (event.target == deleteModal) {
             closeDeleteModal();
+        } else if (event.target == equipmentModal) {
+            closeEquipmentModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -833,6 +857,13 @@ function populateSheet(data) {
     aspirationsEl.innerHTML += `<div class="add-link-wrap"><a class="add-link" onclick="addListItem('aspirations')">Add new</a></div>`;
 
     populateWeapons(character.weapons);
+
+    const equipmentEl = document.getElementById('equipment-content');
+    equipmentEl.innerHTML = '<h3>Equipment</h3>';
+    character.equipment.forEach((equipment, index) => {
+        equipmentEl.innerHTML += `<div class="item"><span onclick="makeEquipmentEditable(this, ${index})">${equipment}</span><span class="delete-icon" onclick="deleteListItem('equipment', ${index})">🗑</span></div>`;
+    });
+    equipmentEl.innerHTML += `<div class="add-link-wrap"><a class="add-link" onclick="addListItem('equipment')">Add new</a></div>`;
 
     // Set up merits editor (only update if merits have changed or editor is empty)
     const meritsEditor = document.getElementById('merits-editor');

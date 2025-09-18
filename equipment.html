@@ -1,0 +1,61 @@
+<script>
+// Equipment modal functions
+function openEquipmentModal() {
+    const modal = document.getElementById('equipment-modal');
+    modal.style.display = 'block';
+    document.getElementById('equipment-input').focus();
+}
+
+function closeEquipmentModal() {
+    const modal = document.getElementById('equipment-modal');
+    modal.style.display = 'none';
+    document.getElementById('equipment-input').value = '';
+}
+
+function addEquipment() {
+    const input = document.getElementById('equipment-input');
+    const equipmentText = input.value.trim();
+
+    if (equipmentText && characterData) {
+        characterData.character.equipment.push(equipmentText);
+        setEdited();
+        render();
+        closeEquipmentModal();
+    }
+}
+
+// Inline editing functions for equipment
+function makeEquipmentEditable(element, index) {
+    if (element.querySelector('input')) return; // Already editing
+    const currentValue = element.textContent;
+
+    element.innerHTML = `
+        <input type="text" value="${currentValue}" style="width: 300px;" onkeypress="handleEquipmentKeypress(event, this, ${index})" onblur="saveEquipmentEdit(this, ${index})">
+        <button onclick="saveEquipmentEdit(this.previousElementSibling, ${index})">✓</button>
+        <button onclick="render()">✗</button>
+    `;
+
+    const input = element.querySelector('input');
+    input.focus();
+    input.select();
+}
+
+function handleEquipmentKeypress(event, input, index) {
+    if (event.key === 'Enter') {
+        saveEquipmentEdit(input, index);
+    } else if (event.key === 'Escape') {
+        render();
+    }
+}
+
+function saveEquipmentEdit(input, index) {
+    const newValue = input.value.trim();
+    if (newValue && characterData) {
+        characterData.character.equipment[index] = newValue;
+        setEdited();
+        render();
+    } else {
+        render(); // Cancel edit if empty
+    }
+}
+</script>
