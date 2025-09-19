@@ -393,6 +393,7 @@ function loadCharacter(fileId) {
                 currentCharacterFile = { id: fileId };
 
                 document.getElementById('character-sheet').classList.add('visible');
+                document.body.classList.add('character-loaded');
                 setUpToDate();
 
                 healthDamageState = []; // Reset health damage state
