@@ -672,6 +672,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Breaking points modal handlers
+    const breakingPointsModal = document.getElementById('breaking-points-modal');
+    const breakingPointsCloseButton = breakingPointsModal.querySelector('.close-button');
+    const addBreakingPointButton = breakingPointsModal.querySelector('#add-breaking-point-btn');
+    const cancelBreakingPointsButton = breakingPointsModal.querySelector('#cancel-breaking-points-btn');
+    const breakingPointInput = document.getElementById('breaking-point-input');
+
+    breakingPointsCloseButton.onclick = closeBreakingPointsModal;
+    cancelBreakingPointsButton.onclick = closeBreakingPointsModal;
+    addBreakingPointButton.onclick = addBreakingPoint;
+
+    // Allow Enter key to add breaking point
+    breakingPointInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addBreakingPoint();
+        }
+    });
+
     // New character modal handlers
     const newCharacterModal = document.getElementById('new-character-modal');
     const newCharacterCloseButton = newCharacterModal.querySelector('.close-button');
@@ -724,6 +742,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeEquipmentModal();
         } else if (event.target == experienceModal) {
             closeExperienceModal();
+        } else if (event.target == breakingPointsModal) {
+            closeBreakingPointsModal();
         } else if (event.target == newCharacterModal) {
             closeNewCharacterModal();
         }
@@ -870,6 +890,9 @@ function populateSheet(data) {
     const integrityEl = document.getElementById('integrity');
     integrityEl.innerHTML = '<h3>Integrity</h3>';
     integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
+
+    const tooltipContent = getBreakingPointsTooltip();
+    integrityEl.innerHTML += `<div><span class="breaking-points-link tooltip" onclick="openBreakingPointsModal()">Breaking points<span class="tooltiptext">${tooltipContent}</span></span></div>`;
 
     const statsAndXpEl = document.getElementById('stats-and-xp');
     statsAndXpEl.innerHTML = `

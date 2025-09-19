@@ -1,0 +1,75 @@
+<script>
+// Breaking points modal functions
+function openBreakingPointsModal() {
+    const modal = document.getElementById('breaking-points-modal');
+    modal.style.display = 'block';
+    populateBreakingPointsList();
+}
+
+function closeBreakingPointsModal() {
+    const modal = document.getElementById('breaking-points-modal');
+    modal.style.display = 'none';
+    document.getElementById('breaking-point-input').value = '';
+}
+
+function populateBreakingPointsList() {
+    const listEl = document.getElementById('breaking-points-list');
+    listEl.innerHTML = '';
+
+    if (!characterData.character.breaking_points) {
+        characterData.character.breaking_points = [];
+    }
+
+    const breakingPoints = characterData.character.breaking_points;
+
+    if (breakingPoints.length === 0) {
+        listEl.innerHTML = '<p style="color: #999; font-style: italic;">No breaking points recorded yet.</p>';
+        return;
+    }
+
+    breakingPoints.forEach((point, index) => {
+        listEl.innerHTML += `
+            <div class="item" style="margin-bottom: 5px;">
+                <span>${point}</span>
+                <span class="delete-icon" onclick="deleteBreakingPoint(${index})" style="cursor: pointer;">🗑</span>
+            </div>
+        `;
+    });
+}
+
+function addBreakingPoint() {
+    const input = document.getElementById('breaking-point-input');
+    const breakingPoint = input.value.trim();
+
+    if (breakingPoint && characterData) {
+        if (!characterData.character.breaking_points) {
+            characterData.character.breaking_points = [];
+        }
+
+        characterData.character.breaking_points.push(breakingPoint);
+        setEdited();
+        populateBreakingPointsList();
+
+        // Clear input and focus for next entry
+        input.value = '';
+        input.focus();
+    }
+}
+
+function deleteBreakingPoint(index) {
+    if (characterData && characterData.character.breaking_points) {
+        characterData.character.breaking_points.splice(index, 1);
+        setEdited();
+        populateBreakingPointsList();
+    }
+}
+
+function getBreakingPointsTooltip() {
+    if (!characterData || !characterData.character.breaking_points || characterData.character.breaking_points.length === 0) {
+        return 'No breaking points recorded';
+    }
+
+    const points = characterData.character.breaking_points;
+    return points.join('<br>');
+}
+</script>

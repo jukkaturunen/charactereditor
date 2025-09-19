@@ -413,6 +413,19 @@ h2 {
   padding: 4px 0;
   border-bottom: 1px dotted #dddddd;
 }
+.breaking-points-link {
+  color: #8b7d6b;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85em;
+  opacity: 0.85;
+  position: relative;
+  display: inline-block;
+  margin-top: 8px;
+}
+.breaking-points-link:hover {
+  opacity: 1;
+}
 .modal {
   display: none;
   position: fixed;
@@ -697,11 +710,28 @@ json-editor *[part=false]         { color: #e69fc2 }
   </div>
 </div>
 
+<div id="breaking-points-modal" class="modal">
+  <div class="modal-content" style="width: 500px;">
+    <span class="close-button">&times;</span>
+    <h2>Breaking Points</h2>
+    <div id="breaking-points-list"></div>
+    <hr style="margin: 15px 0;">
+    <h3>Add New</h3>
+    <label for="breaking-point-input">Breaking point:</label>
+    <input type="text" id="breaking-point-input" placeholder="e.g., Witnessing a murder">
+    <div class="modal-buttons">
+      <button id="cancel-breaking-points-btn">Close</button>
+      <button id="add-breaking-point-btn">Add</button>
+    </div>
+  </div>
+</div>
+
 <?!= HtmlService.createHtmlOutputFromFile('conditions').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('aspirations').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('weapons').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('equipment').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('experience').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('breaking-points').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('json-editor').getContent() ?>
 <?!= HtmlService.createHtmlOutputFromFile('main').getContent() ?>
 
