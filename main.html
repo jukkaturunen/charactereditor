@@ -135,11 +135,17 @@ function renderDots(category, subcategory, name, value, maxDots = 5) {
 
 let healthDamageState = [];
 
-function renderBoxes(category, name, value, maxBoxes = 10) {
+function renderBoxes(category, name, value, maxBoxes = 10, maxValue = null) {
     let boxesHtml = '<div class="boxes">';
     for (let i = 0; i < maxBoxes; i++) {
+        const isActive = maxValue === null || i < maxValue;
         const newValue = (i + 1 === value) ? 0 : i + 1;
-        boxesHtml += `<div class="box ${i < value ? 'filled' : ''}" onclick="updateValue('${category}', '', '${name}', ${newValue})"></div>`;
+
+        if (isActive) {
+            boxesHtml += `<div class="box ${i < value ? 'filled' : ''}" onclick="updateValue('${category}', '', '${name}', ${newValue})"></div>`;
+        } else {
+            boxesHtml += `<div class="box inactive"></div>`;
+        }
     }
     boxesHtml += '</div>';
     return boxesHtml;
@@ -885,7 +891,7 @@ function populateSheet(data) {
     const willpowerEl = document.getElementById('willpower');
     willpowerEl.innerHTML = '<h3>Willpower</h3>';
     willpowerEl.innerHTML += renderDots('willpower', '', 'max', character.willpower.max, 10);
-    willpowerEl.innerHTML += renderBoxes('willpower', 'current', character.willpower.current, 10);
+    willpowerEl.innerHTML += renderBoxes('willpower', 'current', character.willpower.current, 10, character.willpower.max);
 
     const integrityEl = document.getElementById('integrity');
     integrityEl.innerHTML = '<h3>Integrity</h3>';
