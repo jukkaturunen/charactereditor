@@ -302,6 +302,13 @@ function closeDeleteModal() {
     pendingDelete = null;
 }
 
+function updateBreakingPointsTooltip() {
+    const tooltipEl = document.getElementById('breaking-points-tooltip');
+    if (tooltipEl) {
+        tooltipEl.innerHTML = getBreakingPointsTooltip();
+    }
+}
+
 function openSpecialtyModal() {
     const modal = document.getElementById('specialty-modal');
     modal.style.display = 'block';
@@ -898,8 +905,8 @@ function populateSheet(data) {
     integrityEl.innerHTML = '<h3>Integrity</h3>';
     integrityEl.innerHTML += renderDots('integrity', '', '', character.integrity, 10);
 
-    const tooltipContent = getBreakingPointsTooltip();
-    integrityEl.innerHTML += `<div><span class="breaking-points-link tooltip" onclick="openBreakingPointsModal()">Breaking points<span class="tooltiptext">${tooltipContent}</span></span></div>`;
+    integrityEl.innerHTML += `<div><span class="breaking-points-link tooltip" onclick="openBreakingPointsModal()">Breaking points<span class="tooltiptext" id="breaking-points-tooltip"></span></span></div>`;
+    updateBreakingPointsTooltip();
 
     const statsAndXpEl = document.getElementById('stats-and-xp');
     statsAndXpEl.innerHTML = `

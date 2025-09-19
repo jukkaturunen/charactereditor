@@ -49,6 +49,7 @@ function addBreakingPoint() {
         characterData.character.breaking_points.push(breakingPoint);
         setEdited();
         populateBreakingPointsList();
+        updateBreakingPointsTooltip();
 
         // Clear input and focus for next entry
         input.value = '';
@@ -61,6 +62,7 @@ function deleteBreakingPoint(index) {
         characterData.character.breaking_points.splice(index, 1);
         setEdited();
         populateBreakingPointsList();
+        updateBreakingPointsTooltip();
     }
 }
 
