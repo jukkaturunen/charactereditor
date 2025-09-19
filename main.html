@@ -769,10 +769,10 @@ function populateWeapons(weapons) {
             range = `${range.short}/${range.medium}/${range.long}`;
         }
 
-        // Handle special field - show tooltip icon if weapon has special properties
+        // Handle special field - show tooltip link if weapon has special properties
         const tooltipContent = getWeaponSpecialTooltip(name);
         const specialHtml = tooltipContent ?
-            `<span class="tooltip">📋<span class="tooltiptext">${tooltipContent}</span></span>` :
+            `<span class="tooltip add-link">View<span class="tooltiptext">${tooltipContent}</span></span>` :
             '-';
 
         tableHtml += `<tr><td>${name}</td><td>${weapon.dmg}</td><td>${range}</td><td>${weapon.clip || '-'}</td><td>${weapon.init}</td><td>${weapon.str}</td><td>${weapon.size}</td><td>${specialHtml}</td><td><span class="delete-icon" onclick="deleteListItem('weapons', '${name}')">🗑</span></td></tr>`;

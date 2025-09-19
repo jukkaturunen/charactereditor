@@ -276,6 +276,7 @@ h2 {
   cursor: pointer;
   position: relative;
   top: -2px;
+  transition: transform 0.2s ease;
 }
 .delete-icon:hover {
   transform: rotate(20deg);
@@ -288,10 +289,20 @@ h2 {
 .weapons-table th, .weapons-table td {
   border: 1px solid #ccc;
   padding: 5px;
-  text-align: left;
+  text-align: center;
 }
 .weapons-table th {
   background-color: #f0f0f0;
+}
+.weapons-table td:first-child {
+  text-align: left;
+}
+.weapons-table .delete-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.weapons-table .delete-icon:hover {
+  transform: rotate(20deg);
 }
 .toggle-btn {
   cursor: pointer;
